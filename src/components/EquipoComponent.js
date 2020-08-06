@@ -1,13 +1,25 @@
 import React from 'react';
 import axios from 'axios';
-import { withStyles, makeStyles } from '@material-ui/core/styles';
+
+
+import PropTypes from 'prop-types';
+import { makeStyles } from '@material-ui/core/styles';
+import Box from '@material-ui/core/Box';
+import Collapse from '@material-ui/core/Collapse';
+import IconButton from '@material-ui/core/IconButton';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
 import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
+import Typography from '@material-ui/core/Typography';
 import Paper from '@material-ui/core/Paper';
+import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
+import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp';
+import { xml } from 'd3';
+
+import EquipoRow from '../components/EquipoRow'
 
 
 class EquipoComponent extends React.Component{
@@ -15,16 +27,12 @@ class EquipoComponent extends React.Component{
     constructor(){
         super();
         this.state = {
-
             equipos:[],
-            personas:[]
-
+         
         };
     }
     
-
     componentDidMount(){
-
         axios.get('https://isw-nhr.herokuapp.com/api/equipos/all')
         .then(res => {
           const persons = res.data;
@@ -32,70 +40,33 @@ class EquipoComponent extends React.Component{
         })
     }
 
+  
 
     render(){
-        const {equipos} = this.state;
-        const StyledTableCell = withStyles((theme) => ({
-            body: {
-            fontSize: 14,
-            },
-        }))(TableCell);
-    
-        const StyledTableRow = withStyles((theme) => ({
-            root: {
-              '&:nth-of-type(odd)': {
-                backgroundColor: theme.palette.action.hover,
-              },
-            },
-          }))(TableRow);
-    
-          const classes = makeStyles({
-            table: {
-              minWidth: 700,
-            },
-          });
-
-
         return(
+          <TableContainer component={Paper}>
+          <Table aria-label="collapsible table">
+            <TableHead>
+              <TableRow>
+                <TableCell />
+                <TableCell>Id Equipo</TableCell>
+                <TableCell align="right">Nombre Equipo</TableCell>
+                <TableCell align="right">Medico a cargo</TableCell>
+                <TableCell align="right">Integrantes</TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              { this.state.equipos.map((row) => (
+                <EquipoRow key={row.idEquipo} row={row} />
 
+              ))}
+            </TableBody>
+          </Table>
+        </TableContainer>
+      );
+      }
            
-                    <TableContainer component={Paper}>
-                        <Table className={classes.table} aria-label="customized table">
-                            <TableHead>
-                            <TableRow>
-                                <StyledTableCell>Id Equipo</StyledTableCell>
-                                <StyledTableCell align="right">Nombre Equipo</StyledTableCell>
-                                <StyledTableCell align="right">Medico a cargo</StyledTableCell>
-                                <StyledTableCell align="right">Integrantes </StyledTableCell>
-                            </TableRow>
 
-                            </TableHead>
-                            <TableBody>
-                           {
-                                        this.state.equipos.map(
-
-                                            user =>
-                                            <StyledTableRow key= {user.idEquipo}>
-
-
-                                                 <StyledTableCell component="th" scope="row">{user.idEquipo}</StyledTableCell>
-                                                 <StyledTableCell align="right">{user.nameEquipo}</StyledTableCell>
-                                                 <StyledTableCell align="right">{user.director}</StyledTableCell>
-                                                 <StyledTableCell align="right">{user.integrantes}</StyledTableCell>
- 
-
-                                                 </StyledTableRow>
-
-                                        )
-                                        }
-                            </TableBody>
-                        </Table>
-                        </TableContainer>
-                    );
-
-
-
-    }
 }
 
 export default  EquipoComponent;
