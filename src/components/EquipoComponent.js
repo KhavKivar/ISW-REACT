@@ -1,6 +1,6 @@
 import React from 'react';
 import axios from 'axios';
-import EquipoTableRow from '../components/EquipoTableRow';
+
 
 
 class EquipoComponent extends React.Component{
@@ -18,7 +18,7 @@ class EquipoComponent extends React.Component{
 
     componentDidMount(){
 
-        axios.get('http://localhost:8080/api/equipos/all')
+        axios.get('https://isw-nhr.herokuapp.com/api/equipos/all')
         .then(res => {
           const persons = res.data;
           this.setState({ equipos:persons});
@@ -41,17 +41,23 @@ class EquipoComponent extends React.Component{
                             <td>Medico a cargo</td>
                             <td>Integrantes  </td>
                             </tr>
-
-
                         </thead>
                         <tbody>
                                         {
-                                        equipos.map((equipos,index)=>
+                                            
+                                            this.state.equipos.map(
 
-                                        <EquipoTableRow key={index} index={index+1} equipos={equipos}/>
-
-                                       
-                                        )
+                                                user =>
+                                                <tr key = {user.idEquipo}>
+                                                     <td>  {user.idEquipo}</td>
+                                                    <td> {user.nameEquipo   }</td>
+                                                    <td>  {user.director}</td>
+                                                    <td>  {user.integrantes}</td>
+                                                </tr>
+    
+    
+                                            )
+                                        
                                         }
 
                         </tbody>
