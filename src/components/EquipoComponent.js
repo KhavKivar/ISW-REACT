@@ -1,6 +1,13 @@
 import React from 'react';
 import axios from 'axios';
-
+import { withStyles, makeStyles } from '@material-ui/core/styles';
+import Table from '@material-ui/core/Table';
+import TableBody from '@material-ui/core/TableBody';
+import TableCell from '@material-ui/core/TableCell';
+import TableContainer from '@material-ui/core/TableContainer';
+import TableHead from '@material-ui/core/TableHead';
+import TableRow from '@material-ui/core/TableRow';
+import Paper from '@material-ui/core/Paper';
 
 
 class EquipoComponent extends React.Component{
@@ -28,47 +35,64 @@ class EquipoComponent extends React.Component{
 
     render(){
         const {equipos} = this.state;
-        const isLoading = equipos.length === 0;
+        const StyledTableCell = withStyles((theme) => ({
+            body: {
+            fontSize: 14,
+            },
+        }))(TableCell);
+    
+        const StyledTableRow = withStyles((theme) => ({
+            root: {
+              '&:nth-of-type(odd)': {
+                backgroundColor: theme.palette.action.hover,
+              },
+            },
+          }))(TableRow);
+    
+          const classes = makeStyles({
+            table: {
+              minWidth: 700,
+            },
+          });
+
+
         return(
 
-            <div>
-                    <h1 className="text-center"> Lista de equipos </h1>
-                    <table className = "table table-striped">
-                        <thead>
-                            <tr>
-                            <td>Id Equipo</td>
-                            <td>Nombre Equipo</td>
-                            <td>Medico a cargo</td>
-                            <td>Integrantes  </td>
-                            </tr>
-                        </thead>
-                        <tbody>
-                                        {
-                                            
-                                            this.state.equipos.map(
+           
+                    <TableContainer component={Paper}>
+                        <Table className={classes.table} aria-label="customized table">
+                            <TableHead>
+                            <TableRow>
+                                <StyledTableCell>Id Equipo</StyledTableCell>
+                                <StyledTableCell align="right">Nombre Equipo</StyledTableCell>
+                                <StyledTableCell align="right">Medico a cargo</StyledTableCell>
+                                <StyledTableCell align="right">Integrantes </StyledTableCell>
+                            </TableRow>
 
-                                                user =>
-                                                <tr key = {user.idEquipo}>
-                                                     <td>  {user.idEquipo}</td>
-                                                    <td> {user.nameEquipo   }</td>
-                                                    <td>  {user.director}</td>
-                                                    <td>  {user.integrantes}</td>
-                                                </tr>
-    
-    
-                                            )
-                                        
+                            </TableHead>
+                            <TableBody>
+                           {
+                                        this.state.equipos.map(
+
+                                            user =>
+                                            <StyledTableRow key= {user.idEquipo}>
+
+
+                                                 <StyledTableCell component="th" scope="row">{user.idEquipo}</StyledTableCell>
+                                                 <StyledTableCell align="right">{user.nameEquipo}</StyledTableCell>
+                                                 <StyledTableCell align="right">{user.director}</StyledTableCell>
+                                                 <StyledTableCell align="right">{user.integrantes}</StyledTableCell>
+ 
+
+                                                 </StyledTableRow>
+
+                                        )
                                         }
+                            </TableBody>
+                        </Table>
+                        </TableContainer>
+                    );
 
-                        </tbody>
-
-                    </table>
-
-            </div>
-
-
-
-        )
 
 
     }
