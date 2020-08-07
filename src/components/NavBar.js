@@ -42,6 +42,7 @@ render(){
 
           <Button  href= "/equipos" color="inherit">Ver Equipos</Button>
 
+          <Button  href= "/sillones" color="inherit">Ver Sillones</Button>
           
         </Toolbar>
       </AppBar>

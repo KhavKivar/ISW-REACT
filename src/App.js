@@ -10,7 +10,7 @@ import {
 } from "react-router-dom";
 import UserComponet from './components/UserComponent';
 import EquipoComponent from './components/EquipoComponent';
-
+import Sillones from './components/SillonesComponent';
 
 function App() {
   return (
@@ -31,6 +31,12 @@ function App() {
              <EquipoComponent></EquipoComponent>
 
           </Route>
+
+          <Route path="/sillones">
+            <div>
+            <Sillones></Sillones>
+            </div>
+          </Route> 
         </Switch>
       </div>
     </Router>
