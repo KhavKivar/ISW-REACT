@@ -1,6 +1,6 @@
 import sillonService from './services/SillonService';
 import React from 'react';
-import  Button  from '@material-ui/core/Button';
+import { Button } from '@material-ui/core';
 import { Container } from '@material-ui/core';
 import Modal from 'react-bootstrap/Modal'
 import Form from 'react-bootstrap/Form'
@@ -54,8 +54,9 @@ class Sillones extends React.Component{
         console.log(this.state.editDetails)
     }
 
-    loadSillonDetails(e,idd) {
-        let ss = sillonService.viewSillon(idd)
+    loadSillonDetails(e) {
+        let id = e.target.parentNode.getAttribute('data')
+        let ss = sillonService.viewSillon(id)
         console.log(ss)
         ss.then(res => {
             this.setState({editDetails: res.data})
@@ -107,10 +108,10 @@ class Sillones extends React.Component{
                             <td>{data.fecha_update}</td>
                             <td>{data.fecha_creacion}</td>
                             <td>
-                                <Button variant="contained" color="inherit" onClick={this.loadSillonDetails(sillon.id)} data={sillon.id}>Editar</Button>
+                                <Button variant="contained" color="inherit" onClick={this.loadSillonDetails} data={sillon.id}>Editar</Button>
                             </td>
                             <td>
-                                <Button variant="contained" color="secondary" startIcon={<DeleteIcon />} onClick={this.delete(sillon.id)} data={sillon.id}>Eliminar</Button>
+                                <Button variant="contained" color="secondary" startIcon={<DeleteIcon />} onClick={this.delete} data={sillon.id}>Eliminar</Button>
                             </td>
                             
                         </tr>)
@@ -124,14 +125,14 @@ class Sillones extends React.Component{
         this.toogleEditModal()
     }
     
-    delete(e,idd) {
-        console.log(e.target)
+    delete(e) {
+        let target = e.target.parentNode
         var data = {"data": {"motivo": "Sin definir"}}
         var motivo = prompt("Ingrese Motivo de deshabilitación", "Sin definir")
         if (motivo === null) return
         data.data.motivo = motivo
         
-        let deletePromise = sillonService.deleteSillon(idd, data)
+        let deletePromise = sillonService.deleteSillon(target.getAttribute('data'), data)
         deletePromise.then(res => {
             alert("Sillon deshabilitado")
             this.refreshPage()
