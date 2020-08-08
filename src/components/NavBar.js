@@ -29,7 +29,7 @@ render(){
 
 
   return (  
-    <div className={classes.root}>
+    <div className={classes.root} style = {{marginBottom:20}}>
       <AppBar position="static">
         <Toolbar>
           <IconButton edge="start" className={classes.menuButton} color="inherit" aria-label="menu">
@@ -38,11 +38,10 @@ render(){
           <Typography variant="h6" className={classes.title}>
             ISW NHRS
           </Typography>
-          <Button  href= "/personas"  color="inherit">Ver Personas</Button>
+          <Button  href= "/personas"  color="inherit">Personas</Button>
 
-          <Button  href= "/equipos" color="inherit">Ver Equipos</Button>
+          <Button  href= "/equipos" color="inherit">Equipos</Button>
 
-          
         </Toolbar>
       </AppBar>
     </div>

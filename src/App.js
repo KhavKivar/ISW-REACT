@@ -10,6 +10,8 @@ import {
 } from "react-router-dom";
 import UserComponet from './components/UserComponent';
 import EquipoComponent from './components/EquipoComponent';
+import EquipoNew from './components/EquipoNew';
+import Container from '@material-ui/core/Container';
 
 
 function App() {
@@ -22,15 +24,21 @@ function App() {
         <Switch>
 
           <Route path="/personas">
-            <div>
+          <Container>
             <UserComponet></UserComponet>
-            </div>
+            </Container>
           </Route> 
-
+   
           <Route path="/equipos">
+          <Container>
              <EquipoComponent></EquipoComponent>
 
+             </Container>
           </Route>
+
+          
+
+          
         </Switch>
       </div>
     </Router>

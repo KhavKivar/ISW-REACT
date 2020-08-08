@@ -51,7 +51,7 @@ class EquipoRow extends React.Component{
             <React.Fragment>
               <TableRow className={classes.root}>
                 <TableCell>
-                  <IconButton aria-label="expand row" size="small" onClick={() => this.setState({open:true})}>
+                  <IconButton aria-label="expand row" size="small" onClick={() => this.setState({open: !this.state.open})}>
                     {this.state.open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
                   </IconButton>
                 </TableCell>
