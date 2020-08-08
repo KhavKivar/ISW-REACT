@@ -50,7 +50,7 @@ export default function TransferList(personas) {
   const [left, setLeft] = React.useState([]);
 
   const [right, setRight] = React.useState([]);
-  if(ListPersonas.length>0 && left ==0 && right == 0){
+  if(ListPersonas.length>0 && left == 0 && right == 0){
     setLeft(ListPersonas);
   }
 

@@ -13,25 +13,28 @@ import Paper from '@material-ui/core/Paper';
 
 
 
-import EquipoRow from '../components/EquipoRow';
+import EquipoRow from './EquipoRow';
 
-import EquipoModal from '../components/EquipoModal';
+import EquipoModal from './EquipoModal';
 
 class EquipoComponent extends React.Component{
 
     constructor(){
         super();
         this.state = {
-            equipos:[],
-         
+            equipos:[]
         };
+        this.updateEquipo = this.updateEquipo;
     }
-    
+    updateEquipo = (text) =>{ this.setState({equipos:text})};
+
     componentDidMount(){
         axios.get('https://isw-nhr.herokuapp.com/api/equipos/all')
         .then(res => {
           const persons = res.data;
           this.setState({ equipos:persons});
+            
+
         })
     }
 
@@ -46,7 +49,7 @@ class EquipoComponent extends React.Component{
 <div>
 
 
-        <EquipoModal></EquipoModal>
+        <EquipoModal updateEquipos ={this.updateEquipo}></EquipoModal>
 
 
 
@@ -60,13 +63,15 @@ class EquipoComponent extends React.Component{
                 <TableCell align="right">Nombre Equipo</TableCell>
                 <TableCell align="right">Medico a cargo</TableCell>
                 <TableCell align="right">Integrantes</TableCell>
+                <TableCell align="right">Acciones</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
               { this.state.equipos.map((row) => (
-                <EquipoRow key={row.idEquipo} row={row} />
+                <EquipoRow key={row.idEquipo} row={row} updateEquipos ={this.updateEquipo} equipos = {this.state.equipos}/>
 
-              ))}
+              ))
+              }
             </TableBody>
           </Table>
 

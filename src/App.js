@@ -7,8 +7,12 @@ import {
   Switch,
   Route
 } from "react-router-dom";
-import UserComponet from './components/UserComponent';
-import EquipoComponent from './components/EquipoComponent';
+import UserComponet from './components/Equipo/UserComponent';
+
+
+
+
+import EquipoComponent from './components/Equipo/EquipoComponent';
 import Sillones from './components/SillonesComponent';
 
 import Container from '@material-ui/core/Container';
@@ -28,7 +32,9 @@ function App() {
             <UserComponet></UserComponet>
             </Container>
           </Route> 
-   
+
+          
+          
           <Route path="/equipos">
           <Container>
              <EquipoComponent></EquipoComponent>

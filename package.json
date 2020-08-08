@@ -14,6 +14,7 @@
     "d3-ease": "^1.0.6",
     "d3-interpolate": "^1.4.0",
     "jquery": "^3.5.1",
+    "material-table": "^1.68.0",
     "materialize-css": "^1.0.0-rc.2",
     "popper.js": "^1.16.1",
     "react": "^16.13.1",

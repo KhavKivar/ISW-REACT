@@ -1,5 +1,6 @@
 import React from 'react';
 
+import axios from 'axios';
 
 import { makeStyles } from '@material-ui/core/styles';
 import Box from '@material-ui/core/Box';
@@ -16,33 +17,65 @@ import Typography from '@material-ui/core/Typography';
 import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp';
 
-
+import DeleteIcon from '@material-ui/icons/Delete';
 
 class EquipoRow extends React.Component{
     constructor(){
         super();
         this.state = {
-            open:   false
-        }
+            open:   false,
+            modal: false
+        } 
 
         
 
 
     }
-
+    abrirocerrar(){
+      this.state.setState({modal: this.state.modal});
+    }
 
     
+    removeEquipo(e){
+      
+      axios.delete('https://isw-nhr.herokuapp.com/api/equipos/delete/'+e.toString())
+      .then(res => {
+        const response = res.data;
+        console.log(response);
+        if(response === "Ok"){
+          let equipos = this.props.equipos;
+         var  eq = [];
+          for(const element of equipos){
+            if(element.idEquipo == e){
+              continue;
+
+            }
+            eq.push(element);
+          }
+          
+        }
+        this.props.updateEquipos(eq);
+        
+      });
+
+
+    }
 
 
     render(){
         const { row } = this.props;
        
+
         const classes = makeStyles({
           root: {
             '& > *': {
               borderBottom: 'unset',
             },
           },
+          iconos:{
+            cursor:'pointer'
+          },
+
         });
 
         return (
@@ -59,6 +92,20 @@ class EquipoRow extends React.Component{
                 <TableCell align="right">{row.nameEquipo}</TableCell>
                 <TableCell align="right">{row.director}</TableCell>
                 <TableCell align="right">{row.integrantes}</TableCell>
+                <TableCell align="right">
+               
+
+                <IconButton aria-label="delete" onClick={() => { this.removeEquipo(row.idEquipo)}} >
+                    <DeleteIcon />
+                  </IconButton>
+                          
+
+
+                </TableCell>
+
+
+        
+
               </TableRow>
               <TableRow>
                 <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
@@ -103,7 +150,7 @@ class EquipoRow extends React.Component{
             </React.Fragment>
           );
 
-
+         
     }
 
 

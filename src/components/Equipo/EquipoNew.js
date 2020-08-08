@@ -5,7 +5,7 @@ import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 
 import SaveIcon from '@material-ui/icons/Save';
-import Widget from '../components/Widget'
+import Widget from './Widget'
 import 'react-dual-listbox/lib/react-dual-listbox.css';
 
 
@@ -40,8 +40,7 @@ constructor(props) {
   
   handleSubmit(event) {
     
-    console.log(event.target.nameEquipo.value);
-    console.log(event.target.director.value);
+    
     var i;
 
     var idl=[];
@@ -59,10 +58,16 @@ constructor(props) {
     axios.post('https://isw-nhr.herokuapp.com/api/equipos/new', { nameEquipo:event.target.nameEquipo.value,
     director :event.target.director.value,
     ids :idl} )
-    .then(res => {
-      console.log(res);
-      console.log(res.data);
-      document.getElementsByClassName("makeStyles-paper-1")[0].style.display = "none";
+    .then(res => {      
+      this.props.onCloseModal();
+
+      axios.get('https://isw-nhr.herokuapp.com/api/equipos/all')
+      .then(res => {
+        const persons = res.data;
+        this.props.updateValue(persons);
+
+      })
+     
 
     })  
   
@@ -90,8 +95,8 @@ constructor(props) {
    const classes = makeStyles((theme) => ({
       root: {
         '& > *': {
-          margin: theme.spacing(10),
-          width: '40ch',
+          margin: theme.spacing(1),
+          width: '25ch',
         },
       },
     }));
@@ -100,25 +105,39 @@ constructor(props) {
     return (
      
       <form  onSubmit = {this.handleSubmit} className={classes.root} noValidate autoComplete="off">
-        <div style = {{marginTop:30}}>
+        <div style = {{marginTop:30 }}>
                 <TextField fullWidth = {true} name = "nameEquipo"
-                 id="nameEquipo" label="Nombre del equipo" variant="outlined" />   
+                 id="nameEquipo" label="Nombre del equipo" variant="outlined"
+                 inputProps={{
+                  style: {
+                    padding: 3
+                  }
+               }}
+           
+                 type ="text"  
+                 />   
             </div>
           <div style ={{marginTop:20}}>
-           <TextField fullWidth = {true} id="director" label="Director" variant="outlined" />  
+           <TextField fullWidth = {true} id="director" label="Director" variant="outlined" 
+                inputProps={{
+                  style: {
+                    padding: 3
+                  }
+               }}
+           />  
           </div>
           
           <div style = {{ marginTop:20,marginInlineStart:-15}}>         
             
              <Widget personas = {this.state.personas}></Widget>
-          </div>
+            </div>
 
-          <div style = {{marginTop:10}}>
-             <Button
-        variant="contained"
-        color="secondary"
-        size="large"
-        fullWidth = {true}
+            <div style = {{marginTop:10}}>
+              <Button
+          variant="contained"
+          color="secondary"
+          size="large"
+          fullWidth = {true}
         className={classes.button}
         startIcon={<SaveIcon />
         }
