@@ -68,7 +68,11 @@ class EquipoComponent extends React.Component{
             </TableHead>
             <TableBody>
               { this.state.equipos.map((row) => (
-                <EquipoRow key={row.idEquipo} row={row} updateEquipos ={this.updateEquipo} equipos = {this.state.equipos}/>
+                <EquipoRow key={row.idEquipo}
+                 row={row} 
+                 updateEquipos ={this.updateEquipo}
+                 
+                 equipos = {this.state.equipos}/>
 
               ))
               }

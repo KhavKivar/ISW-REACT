@@ -5,6 +5,8 @@ import Modal from '@material-ui/core/Modal';
 import Button from '@material-ui/core/Button';
 import CreateIcon from '@material-ui/icons/Create'
 import EquipoNew from './EquipoNew';
+import EditIcon from '@material-ui/icons/Edit';
+import IconButton from '@material-ui/core/IconButton';
 
 
 function getModalStyle() {
@@ -39,9 +41,23 @@ export default function SimpleModal(props) {
   // getModalStyle is not a pure function, we roll the style only on the first render
   const [modalStyle] = React.useState(getModalStyle);
   const [open, setOpen] = React.useState(false);
+  const [data,setData] = React.useState([]);
 
   const handleOpen = () => {
+    var eq;
+    let equipos = props.data;
+    
+    for(const element of equipos){
+      if(element.idEquipo == props.id){
+          eq = element;
+
+      }
+    }
+
+    setData(eq);
     setOpen(true);
+
+
   };
 
   const handleClose = () => {
@@ -50,9 +66,11 @@ export default function SimpleModal(props) {
 
   const body = (
     <div style={modalStyle} className={classes.paper}>
-
-    <EquipoNew data={props.data}  
-    onCloseModal={handleClose} updateValue = {props.updateEquipos} ></EquipoNew>
+         <EquipoNew  data={data}
+         onCloseModal={handleClose} updateValue = {props.updateValue} 
+         
+         
+         ></EquipoNew>
      
     </div>
   );
@@ -60,18 +78,9 @@ export default function SimpleModal(props) {
   return (
     <div>
 
-<Button 
-        variant="contained"
-        color="secondary"
-        className={classes.button}
-        startIcon={<CreateIcon />}
-        onClick={handleOpen}
-        
-
-
-      >
-        Agregar
-      </Button>
+<IconButton aria-label="edit" onClick={handleOpen} >
+                    <EditIcon />
+                  </IconButton>
 
       <Modal
         open={open}

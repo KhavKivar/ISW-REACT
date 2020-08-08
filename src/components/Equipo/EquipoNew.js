@@ -21,9 +21,15 @@ constructor(props) {
 
     this.state = {nameEquipo: '',
                   director:'',
-                  personas:[]
+                  personas:[],
+                  px:[],
+                  idEquipo:-1
     };
+    
+   
 
+
+    
 
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -32,6 +38,7 @@ constructor(props) {
 
   handleChange(event) {  
     const vv = event.target.value;
+
     this.setState({
         [event.target.name] :vv
     })
@@ -54,24 +61,44 @@ constructor(props) {
       }
     }
   
+    
+    if(this.state.px.length>0){
 
-    axios.post('https://isw-nhr.herokuapp.com/api/equipos/new', { nameEquipo:event.target.nameEquipo.value,
-    director :event.target.director.value,
-    ids :idl} )
-    .then(res => {      
-      this.props.onCloseModal();
+      axios.put('https://isw-nhr.herokuapp.com/api/equipos/edit/'+this.props.data.idEquipo, 
+      { nameEquipo:event.target.nameEquipo.value,
+      director :event.target.director.value,
+      ids :idl} )
+      .then(res => {      
+        this.props.onCloseModal();
+        axios.get('https://isw-nhr.herokuapp.com/api/equipos/all')
+        .then(res => {
+          const persons = res.data;
+          this.props.updateValue(persons);
+        })
+      })  
+    }
 
-      axios.get('https://isw-nhr.herokuapp.com/api/equipos/all')
-      .then(res => {
-        const persons = res.data;
-        this.props.updateValue(persons);
+    else
+    {
 
-      })
-     
+    
+      axios.post('https://isw-nhr.herokuapp.com/api/equipos/new', { nameEquipo:event.target.nameEquipo.value,
+      director :event.target.director.value,
+      ids :idl} )
+      .then(res => {      
+        this.props.onCloseModal();
 
-    })  
-  
-  
+        axios.get('https://isw-nhr.herokuapp.com/api/equipos/all')
+        .then(res => {
+          const persons = res.data;
+          this.props.updateValue(persons);
+
+        })
+        
+
+      })  
+
+  }
   
   
   }
@@ -79,6 +106,20 @@ constructor(props) {
 
 
   componentDidMount(){
+   
+
+    if(typeof this.props.data !== 'undefined'){
+      this.setState({px:this.props.data.personas});
+    }
+
+
+    if(this.props.data != null){
+
+      
+    this.setState({nameEquipo:this.props.data.nameEquipo});
+    this.setState({director:this.props.data.director});
+
+  } 
 
     axios.get('https://isw-nhr.herokuapp.com/api/personas/all')
     .then(res => {
@@ -102,11 +143,15 @@ constructor(props) {
     }));
   
 
+    
     return (
-     
+      
       <form  onSubmit = {this.handleSubmit} className={classes.root} noValidate autoComplete="off">
         <div style = {{marginTop:30 }}>
-                <TextField fullWidth = {true} name = "nameEquipo"
+                <TextField value={this.state.nameEquipo || ''} 
+                onChange={this.handleChange}
+
+                fullWidth = {true} name = "nameEquipo"
                  id="nameEquipo" label="Nombre del equipo" variant="outlined"
                  inputProps={{
                   style: {
@@ -118,7 +163,10 @@ constructor(props) {
                  />   
             </div>
           <div style ={{marginTop:20}}>
-           <TextField fullWidth = {true} id="director" label="Director" variant="outlined" 
+           <TextField value={this.state.director || ''}  onChange={this.handleChange}
+            fullWidth = {true} id="director" label="Director" variant="outlined"  
+        
+            name= "director"
                 inputProps={{
                   style: {
                     padding: 3
@@ -129,7 +177,12 @@ constructor(props) {
           
           <div style = {{ marginTop:20,marginInlineStart:-15}}>         
             
-             <Widget personas = {this.state.personas}></Widget>
+             <Widget personas = {this.state.personas}
+
+              personasedit = {this.state.px }>
+
+                
+              </Widget>
             </div>
 
             <div style = {{marginTop:10}}>

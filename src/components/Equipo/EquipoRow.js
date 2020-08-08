@@ -19,12 +19,17 @@ import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp';
 
 import DeleteIcon from '@material-ui/icons/Delete';
 
+  import EditIcon from '@material-ui/icons/Edit';
+import EquipoModalEdit from './EquipoModalEdit'
+
 class EquipoRow extends React.Component{
     constructor(){
         super();
         this.state = {
             open:   false,
-            modal: false
+            modal: false,
+            openv:false
+
         } 
 
         
@@ -33,15 +38,21 @@ class EquipoRow extends React.Component{
     }
     abrirocerrar(){
       this.state.setState({modal: this.state.modal});
+
+
     }
 
-    
+  
+
+
+
     removeEquipo(e){
-      
+
+     
       axios.delete('https://isw-nhr.herokuapp.com/api/equipos/delete/'+e.toString())
       .then(res => {
         const response = res.data;
-        console.log(response);
+       
         if(response === "Ok"){
           let equipos = this.props.equipos;
          var  eq = [];
@@ -57,6 +68,7 @@ class EquipoRow extends React.Component{
         this.props.updateEquipos(eq);
         
       });
+      
 
 
     }
@@ -93,8 +105,17 @@ class EquipoRow extends React.Component{
                 <TableCell align="right">{row.director}</TableCell>
                 <TableCell align="right">{row.integrantes}</TableCell>
                 <TableCell align="right">
-               
 
+               <EquipoModalEdit  updateValue = {this.props.updateEquipos}
+                data = {this.props.equipos} id = {row.idEquipo} >
+
+
+
+               </EquipoModalEdit>
+            
+                  
+
+                  
                 <IconButton aria-label="delete" onClick={() => { this.removeEquipo(row.idEquipo)}} >
                     <DeleteIcon />
                   </IconButton>

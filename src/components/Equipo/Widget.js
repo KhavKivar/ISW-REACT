@@ -39,10 +39,17 @@ export default function TransferList(personas) {
 
   var x= personas.personas;
 
-  var ListPersonas = [];
+  var y = personas.personasedit;
 
+  var ListPersonas = [];
+  var Lleft = [];
+
+ 
   for(const element of x){
     ListPersonas.push(element.nombre+" "+element.apellido);
+  }
+  for(const element of y){
+    Lleft.push(element.nombre+" "+element.apellido);
   }
   
 
@@ -51,7 +58,27 @@ export default function TransferList(personas) {
 
   const [right, setRight] = React.useState([]);
   if(ListPersonas.length>0 && left == 0 && right == 0){
-    setLeft(ListPersonas);
+    
+    if(y != null){
+      /* SetLeft and SetRight*/
+      for(const element of Lleft){
+        if(ListPersonas.includes(element)){
+           console.log(element);
+           ListPersonas.splice(ListPersonas.indexOf(element) ,1);
+        }
+      }
+
+      setLeft(ListPersonas);
+
+      setRight(Lleft);
+
+
+    } 
+    else{
+        setLeft(ListPersonas);
+    }
+    
+  
   }
 
 
