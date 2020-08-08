@@ -5,8 +5,7 @@ import NavBar from './components/NavBar';
 import {
   BrowserRouter as Router,
   Switch,
-  Route,
-  Link
+  Route
 } from "react-router-dom";
 import UserComponet from './components/UserComponent';
 import EquipoComponent from './components/EquipoComponent';

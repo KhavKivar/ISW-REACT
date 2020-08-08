@@ -3,15 +3,11 @@ import axios from 'axios';
 import { makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
-import DeleteIcon from '@material-ui/icons/Delete';
-import CloudUploadIcon from '@material-ui/icons/CloudUpload';
-import KeyboardVoiceIcon from '@material-ui/icons/KeyboardVoice';
-import Icon from '@material-ui/core/Icon';
+
 import SaveIcon from '@material-ui/icons/Save';
-import ListBox from 'react-listbox';
 import Widget from '../components/Widget'
 import 'react-dual-listbox/lib/react-dual-listbox.css';
-import Container from '@material-ui/core/Container';
+
 
 
 
@@ -66,7 +62,7 @@ constructor(props) {
     .then(res => {
       console.log(res);
       console.log(res.data);
-      document.getElementsByClassName("makeStyles-paper-1")[0].style.display = "none"
+      document.getElementsByClassName("makeStyles-paper-1")[0].style.display = "none";
 
     })  
   
