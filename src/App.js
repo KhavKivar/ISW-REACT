@@ -10,7 +10,8 @@ import {
 } from "react-router-dom";
 import UserComponet from './components/UserComponent';
 import EquipoComponent from './components/EquipoComponent';
-import EquipoNew from './components/EquipoNew';
+import Sillones from './components/SillonesComponent';
+
 import Container from '@material-ui/core/Container';
 
 
@@ -36,9 +37,11 @@ function App() {
              </Container>
           </Route>
 
-          
-
-          
+          <Route path="/sillones">
+            <div>
+            <Sillones></Sillones>
+            </div>
+          </Route> 
         </Switch>
       </div>
     </Router>
