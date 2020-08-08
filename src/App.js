@@ -11,6 +11,7 @@ import {
 import UserComponet from './components/UserComponent';
 import EquipoComponent from './components/EquipoComponent';
 import Sillones from './components/SillonesComponent';
+import HistorialSillones from './components/HistorialSillones'
 
 function App() {
   return (
@@ -35,6 +36,11 @@ function App() {
           <Route path="/sillones">
             <div>
             <Sillones></Sillones>
+            </div>
+          </Route> 
+          <Route path="/silloneseliminados">
+            <div>
+            <HistorialSillones></HistorialSillones>
             </div>
           </Route> 
         </Switch>
