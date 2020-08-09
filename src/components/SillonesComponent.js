@@ -130,13 +130,15 @@ class Sillones extends React.Component{
     }
     
     delete(e) {
-        let target = e.target.parentNode
+        let id = e.target.getAttribute('data')
+        if (id == undefined)
+            id = e.target.parentNode.getAttribute('data')
         var data = {"data": {"motivo": "Sin definir"}}
         var motivo = prompt("Ingrese Motivo de deshabilitación", "Sin definir")
         if (motivo === null) return
         data.data.motivo = motivo
         
-        let deletePromise = sillonService.deleteSillon(target.getAttribute('data'), data)
+        let deletePromise = sillonService.deleteSillon(id, data)
         deletePromise.then(res => {
             alert("Sillon deshabilitado")
             this.refreshPage()
