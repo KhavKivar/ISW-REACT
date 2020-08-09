@@ -56,7 +56,10 @@ class Sillones extends React.Component{
     }
 
     loadSillonDetails(e) {
-        let id = e.target.parentNode.getAttribute('data')
+        let id = e.target.getAttribute('data')
+        if (id == undefined)
+            id = e.target.parentNode.getAttribute('data')
+        console.log(id)
         let ss = sillonService.viewSillon(id)
         console.log(ss)
         ss.then(res => {
@@ -91,36 +94,36 @@ class Sillones extends React.Component{
         delete data["fecha_creacion"]
         delete data["fecha_update"]
         delete data["fecha_retirado"]
-        console.log(data)
+        console.log(this.state.editDetails.id)
         let ss = sillonService.editSillon(this.state.editDetails.id, data)
         console.log(ss)
         ss.then(res => {
             let data = res.data
             
-            let newState = this.state.sillones.map(sillon => {
-                console.log(sillon.id, this.state.editDetails.id)
-                if (sillon.id === this.state.editDetails.id) {
-                    console.log("cambio")
-                    return <>
-                        <tr key={data.id}>
-                            <th>{data.id}</th>
-                            <td>{data.numero_sillon}</td>
-                            <td>{data.numero_sala}</td>
-                            <td>{data.fecha_update}</td>
-                            <td>{data.fecha_creacion}</td>
-                            <td>
-                                <Button variant="contained" color="inherit" onClick={this.loadSillonDetails} data={sillon.id}>Editar</Button>
-                            </td>
-                            <td>
-                                <Button variant="contained" color="secondary" startIcon={<DeleteIcon />} onClick={this.delete} data={sillon.id}>Eliminar</Button>
-                            </td>
+        //     let newState = this.state.sillones.map(sillon => {
+        //         console.log(sillon.id, this.state.editDetails.id)
+        //         if (sillon.id === this.state.editDetails.id) {
+        //             console.log("cambio")
+        //             return <>
+        //                 <tr key={data.id}>
+        //                     <th>{data.id}</th>
+        //                     <td>{data.numero_sillon}</td>
+        //                     <td>{data.numero_sala}</td>
+        //                     <td>{data.fecha_update}</td>
+        //                     <td>{data.fecha_creacion}</td>
+        //                     <td>
+        //                         <Button variant="contained" color="inherit" onClick={this.loadSillonDetails} data={sillon.id}>Editar</Button>
+        //                     </td>
+        //                     <td>
+        //                         <Button variant="contained" color="secondary" startIcon={<DeleteIcon />} onClick={this.delete} data={sillon.id}>Eliminar</Button>
+        //                     </td>
                             
-                        </tr>)
-                    </>
-                }
-                return sillon
-            })
-            this.setState({sillones: newState})
+        //                 </tr>)
+        //             </>
+        //         }
+        //         return sillon
+        //     })
+        //     this.setState({sillones: newState})
         })
 
         this.toogleEditModal()
