@@ -146,20 +146,19 @@ class Sillones extends React.Component{
     getsillones() {
         sillonService.viewAll().then(res => {
             this.setState({ sillones: res.data.map(sillon =>
-                <tr key={sillon.id}>
-                <th>{sillon.id}</th>
-                <td>{sillon.numero_sillon}</td>
-                <td>{sillon.numero_sala}</td>
-                <td>{sillon.fecha_update}</td>
-                <td>{sillon.fecha_creacion}</td>
-                <td>
-                <Button variant="contained" color="inherit" onClick={this.loadSillonDetails} data={sillon.id}>Editar</Button>
-                </td>
-                <td>
-                <Button variant="contained" color="secondary" onClick={this.delete} startIcon={<DeleteIcon />} data={sillon.id}>Eliminar</Button>
-                </td>
-                
-                </tr>)
+                <TableRow key={sillon.id}>
+                    <TableCell component="th" scope="row">{sillon.id}</TableCell>
+                    <TableCell>{sillon.numero_sillon}</TableCell>
+                    <TableCell>{sillon.numero_sala}</TableCell>
+                    <TableCell>{sillon.fecha_update}</TableCell>
+                    <TableCell>{sillon.fecha_creacion}</TableCell>
+                    <TableCell>
+                        <Button variant="contained" color="inherit" onClick={this.loadSillonDetails} data={sillon.id}>Editar</Button>
+                    </TableCell>
+                    <TableCell>
+                        <Button variant="contained" color="secondary" onClick={this.delete} startIcon={<DeleteIcon />} data={sillon.id}>Eliminar</Button>
+                    </TableCell>
+                </TableRow>)
             })
         })
     }
@@ -245,26 +244,26 @@ class Sillones extends React.Component{
         <Button size="large" href="/silloneseliminados" color="inherit" variant="contained">Historial de Sillones Borrados</Button>
         
         </Container>
-        <Container fixed>
+        <Container>
         <TableContainer component={Paper}>
-        <Table  align="left"aria-label="customized table" ></Table>
-        <TableHead>
-        <TableRow class="highlight">
-        <StyledTableCell>Id</StyledTableCell>
-        <StyledTableCell  >Número Sillón</StyledTableCell>
-        <StyledTableCell>Número Sala</StyledTableCell>
-        <StyledTableCell >Ultima actualizacion</StyledTableCell>
-        <StyledTableCell >Fecha de creación</StyledTableCell>
-        </TableRow>
-        </TableHead>
-        <TableBody class="centered">
-        {this.state.sillones}
-    </TableBody>
-</TableContainer>
-</Container>
-            
-        
-      
+            <Table  align="left"aria-label="customized table">
+                <TableHead>
+                    <TableRow>
+                        <StyledTableCell>Id</StyledTableCell>
+                        <StyledTableCell >Número Sillón</StyledTableCell>
+                        <StyledTableCell>Número Sala</StyledTableCell>
+                        <StyledTableCell>Ultima actualizacion</StyledTableCell>
+                        <StyledTableCell>Fecha de creación</StyledTableCell>
+                        <StyledTableCell></StyledTableCell>
+                        <StyledTableCell></StyledTableCell>
+                    </TableRow>
+                </TableHead>
+                <TableBody>
+                    {this.state.sillones}
+                </TableBody>
+            </Table>
+        </TableContainer>
+        </Container>
         </>
     }
 }
