@@ -145,20 +145,29 @@ class Sillones extends React.Component{
     }
     getsillones() {
         sillonService.viewAll().then(res => {
-            this.setState({ sillones: res.data.map(sillon =>
-                <TableRow key={sillon.id}>
-                    <TableCell component="th" scope="row">{sillon.id}</TableCell>
-                    <TableCell>{sillon.numero_sillon}</TableCell>
-                    <TableCell>{sillon.numero_sala}</TableCell>
-                    <TableCell>{sillon.fecha_update}</TableCell>
-                    <TableCell>{sillon.fecha_creacion}</TableCell>
-                    <TableCell>
-                        <Button variant="contained" color="inherit" onClick={this.loadSillonDetails} data={sillon.id}>Editar</Button>
-                    </TableCell>
-                    <TableCell>
-                        <Button variant="contained" color="secondary" onClick={this.delete} startIcon={<DeleteIcon />} data={sillon.id}>Eliminar</Button>
-                    </TableCell>
-                </TableRow>)
+            this.setState({ sillones: res.data.map(sillon => {
+                    let creationDate = new Date(sillon.fecha_creacion).toLocaleString('es-CL')
+                    let updateDate
+                    if (sillon.fecha_update)
+                        updateDate = new Date(sillon.fecha_update).toLocaleString('es-CL')
+                    console.log(creationDate, updateDate)
+                return  <>
+                    <TableRow key={sillon.id}>
+                        <TableCell component="th" scope="row">{sillon.id}</TableCell>
+                        <TableCell>{sillon.numero_sillon}</TableCell>
+                        <TableCell>{sillon.numero_sala}</TableCell>
+                        <TableCell>{updateDate}</TableCell>
+                        <TableCell>{creationDate}</TableCell>
+                        <TableCell>
+                            <Button variant="contained" color="inherit" onClick={this.loadSillonDetails} data={sillon.id}>Editar</Button>
+                        </TableCell>
+                        <TableCell>
+                            <Button variant="contained" color="secondary" onClick={this.delete} startIcon={<DeleteIcon />} data={sillon.id}>Eliminar</Button>
+                        </TableCell>
+                    </TableRow>
+                </>
+                    })
+                
             })
         })
     }
