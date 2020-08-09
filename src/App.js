@@ -12,7 +12,7 @@ import UserComponet from './components/UserComponent';
 import EquipoComponent from './components/EquipoComponent';
 import Sillones from './components/SillonesComponent';
 import HistorialSillones from './components/HistorialSillones'
-
+import SillonesEliminados from './components/SillonesEliminadosComponent'
 function App() {
   return (
 
@@ -43,6 +43,11 @@ function App() {
             <HistorialSillones></HistorialSillones>
             </div>
           </Route> 
+          <Route path="/silloneseliminadoslist">
+            <div>
+            <SillonesEliminados></SillonesEliminados>
+            </div>
+          </Route>
         </Switch>
       </div>
     </Router>
