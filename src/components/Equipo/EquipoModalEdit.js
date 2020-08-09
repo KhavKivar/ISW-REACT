@@ -78,7 +78,10 @@ export default function SimpleModal(props) {
   return (
     <div>
 
-<IconButton aria-label="edit" onClick={handleOpen} >
+<IconButton
+style={{float:"left", display:"inline",width: "30%"}}
+
+aria-label="edit" onClick={handleOpen} >
                     <EditIcon />
                   </IconButton>
 

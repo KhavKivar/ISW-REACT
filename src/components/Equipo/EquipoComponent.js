@@ -10,19 +10,33 @@ import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
+import { makeStyles } from '@material-ui/core/styles';
 
-
+import TablePagination from '@material-ui/core/TablePagination';
 
 import EquipoRow from './EquipoRow';
 
 import EquipoModal from './EquipoModal';
+
+
+
+const clases = makeStyles({
+  root: {
+    fontSize:30
+  },
+});
+
+
+
 
 class EquipoComponent extends React.Component{
 
     constructor(){
         super();
         this.state = {
-            equipos:[]
+            equipos:[],
+            page:0,
+            rowsPerPage:10
         };
         this.updateEquipo = this.updateEquipo;
     }
@@ -38,10 +52,20 @@ class EquipoComponent extends React.Component{
         })
     }
 
+    handleChangePage = (event, newPage) => {
+      this.setState({page:newPage});
+    };
+
+
+    handleChangeRowsPerPage = (event) => {
+     
+      this.setState({rowsPerPage : event.target.value, page:0});
+    };
   
+    
 
     render(){
-      
+
 
 
         return(
@@ -55,9 +79,9 @@ class EquipoComponent extends React.Component{
 
         <div style = {{marginTop:20}}>         
           <TableContainer component={Paper}>
-          <Table aria-label="collapsible table">
-            <TableHead>
-              <TableRow>
+          <Table aria-label="collapsible table" >
+            <TableHead >
+              <TableRow >
                 <TableCell />
                 <TableCell>Id Equipo</TableCell>
                 <TableCell align="right">Nombre Equipo</TableCell>
@@ -67,7 +91,9 @@ class EquipoComponent extends React.Component{
               </TableRow>
             </TableHead>
             <TableBody>
-              { this.state.equipos.map((row) => (
+              { this.state.equipos.slice(this.state.page*this.state.rowsPerPage,
+              this.state.page*this.state.rowsPerPage+this.state.rowsPerPage)
+              .map((row) => (
                 <EquipoRow key={row.idEquipo}
                  row={row} 
                  updateEquipos ={this.updateEquipo}
@@ -80,6 +106,18 @@ class EquipoComponent extends React.Component{
           </Table>
 
         </TableContainer>
+
+        <TablePagination
+        rowsPerPageOptions={[10, 25, 100]}
+        component="div"
+        count={this.state.equipos.length}
+        rowsPerPage={this.state.rowsPerPage}
+        page={this.state.page}
+        onChangePage={this.handleChangePage}
+        onChangeRowsPerPage={this.handleChangeRowsPerPage}
+        
+      />
+
         </div>
 
         </div>

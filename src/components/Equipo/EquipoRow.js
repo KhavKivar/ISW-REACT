@@ -87,7 +87,7 @@ class EquipoRow extends React.Component{
           iconos:{
             cursor:'pointer'
           },
-
+          
         });
 
         return (
@@ -104,25 +104,28 @@ class EquipoRow extends React.Component{
                 <TableCell align="right">{row.nameEquipo}</TableCell>
                 <TableCell align="right">{row.director}</TableCell>
                 <TableCell align="right">{row.integrantes}</TableCell>
+
+
+
                 <TableCell align="right">
+               
+
+           
+                
 
                <EquipoModalEdit  updateValue = {this.props.updateEquipos}
                 data = {this.props.equipos} id = {row.idEquipo} >
-
-
-
                </EquipoModalEdit>
-            
-                  
 
-                  
-                <IconButton aria-label="delete" onClick={() => { this.removeEquipo(row.idEquipo)}} >
-                    <DeleteIcon />
-                  </IconButton>
-                          
+              
+               <IconButton aria-label="delete"  style={{float:"right", display:"inline",width: "30%"}}
 
+               onClick={() => { this.removeEquipo(row.idEquipo)}} >
+               <DeleteIcon />
+               </IconButton>
 
-                </TableCell>
+               </TableCell>
+         
 
 
         

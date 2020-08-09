@@ -47,58 +47,69 @@ constructor(props) {
   
   handleSubmit(event) {
     
-    
+    if(event.target.nameEquipo.value.length >0 && event.target.director.value >0 &
+      idl.length>0 ){
+
+
+      
     var i;
 
     var idl=[];
     event.preventDefault();
     for(i = 0; i < document.getElementsByClassName("MuiList-root MuiList-dense MuiList-padding")[1].childElementCount-1;i++){
-      let x = document.getElementsByClassName("MuiList-root MuiList-dense MuiList-padding")[1].children[i].innerText;
-      for(const element of this.state.personas){
-          if(element.nombre + " "+element.apellido === x){
-            idl.push(element.identificador.toString());
+          let x = document.getElementsByClassName("MuiList-root MuiList-dense MuiList-padding")[1].children[i].innerText;
+          for(const element of this.state.personas){
+              if(element.nombre + " "+element.apellido === x){
+                idl.push(element.identificador.toString());
+              }
           }
+        }
+
+        
+        if(this.state.px.length>0){
+
+          axios.put('https://isw-nhr.herokuapp.com/api/equipos/edit/'+this.props.data.idEquipo, 
+          { nameEquipo:event.target.nameEquipo.value,
+          director :event.target.director.value,
+          ids :idl} )
+          .then(res => {      
+            this.props.onCloseModal();
+            axios.get('https://isw-nhr.herokuapp.com/api/equipos/all')
+            .then(res => {
+              const persons = res.data;
+              this.props.updateValue(persons);
+            })
+          })  
+        }
+
+        else
+        {
+
+        
+          axios.post('https://isw-nhr.herokuapp.com/api/equipos/new', { nameEquipo:event.target.nameEquipo.value,
+          director :event.target.director.value,
+          ids :idl} )
+          .then(res => {      
+            this.props.onCloseModal();
+
+            axios.get('https://isw-nhr.herokuapp.com/api/equipos/all')
+            .then(res => {
+              const persons = res.data;
+              this.props.updateValue(persons);
+
+            })
+            
+
+          })  
+
       }
     }
-  
-    
-    if(this.state.px.length>0){
 
-      axios.put('https://isw-nhr.herokuapp.com/api/equipos/edit/'+this.props.data.idEquipo, 
-      { nameEquipo:event.target.nameEquipo.value,
-      director :event.target.director.value,
-      ids :idl} )
-      .then(res => {      
-        this.props.onCloseModal();
-        axios.get('https://isw-nhr.herokuapp.com/api/equipos/all')
-        .then(res => {
-          const persons = res.data;
-          this.props.updateValue(persons);
-        })
-      })  
+
+    else{ 
+        event.preventDefault();
+        console.log("campos vacios");
     }
-
-    else
-    {
-
-    
-      axios.post('https://isw-nhr.herokuapp.com/api/equipos/new', { nameEquipo:event.target.nameEquipo.value,
-      director :event.target.director.value,
-      ids :idl} )
-      .then(res => {      
-        this.props.onCloseModal();
-
-        axios.get('https://isw-nhr.herokuapp.com/api/equipos/all')
-        .then(res => {
-          const persons = res.data;
-          this.props.updateValue(persons);
-
-        })
-        
-
-      })  
-
-  }
   
   
   }
@@ -138,8 +149,17 @@ constructor(props) {
         '& > *': {
           margin: theme.spacing(1),
           width: '25ch',
-        },
+        }
       },
+      button:{
+        background: 'linear-gradient(45deg, #FE6B8B 30%, #FF8E53 90%)',
+        border: 0,
+        borderRadius: 3,
+        boxShadow: '0 3px 5px 2px rgba(255, 105, 135, .3)',
+        color: 'white',
+        height: 48,
+        padding: '0 30px'
+      }
     }));
   
 
@@ -155,7 +175,7 @@ constructor(props) {
                  id="nameEquipo" label="Nombre del equipo" variant="outlined"
                  inputProps={{
                   style: {
-                    padding: 3
+                    paddingInlineStart:5
                   }
                }}
            
@@ -186,22 +206,22 @@ constructor(props) {
             </div>
 
             <div style = {{marginTop:10}}>
-              <Button
-          variant="contained"
-          color="secondary"
-          size="large"
-          fullWidth = {true}
-        className={classes.button}
-        startIcon={<SaveIcon />
-        }
-        type = "submit"
-       
-      >
-        Save
-      </Button>
-       
+            <Button
+                  variant="contained"
+                  color="secondary"
+        
+                size="large"
+                fullWidth = {true}
+              className={classes.button}
+              startIcon={<SaveIcon />
+              }
+              type = "submit"
+            >
+              Save
+            </Button>
+              
       
-        </div>
+              </div>
 
       </form>
 
