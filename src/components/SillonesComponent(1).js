@@ -4,6 +4,7 @@ import { Button } from '@material-ui/core';
 import { Container } from '@material-ui/core';
 import Modal from 'react-bootstrap/Modal'
 import Form from 'react-bootstrap/Form'
+
 import { withStyles, makeStyles } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
@@ -93,8 +94,9 @@ class Sillones extends React.Component{
         delete data["fecha_creacion"]
         delete data["fecha_update"]
         delete data["fecha_retirado"]
-        console.log(data)
+        console.log(this.state.editDetails.id)
         let ss = sillonService.editSillon(this.state.editDetails.id, data)
+        console.log(ss)
         ss.then(res => {
             let data = res.data
             
@@ -123,9 +125,10 @@ class Sillones extends React.Component{
         //     })
         //     this.setState({sillones: newState})
         })
+
         this.toogleEditModal()
     }
-   
+    
     delete(e) {
         let id = e.target.getAttribute('data')
         if (id == undefined)
@@ -144,48 +147,68 @@ class Sillones extends React.Component{
         console.log(deletePromise)
     }
     getsillones() {
+        const StyledTableCell = withStyles((theme) => ({
+            body: {
+            fontSize: 14,
+            },
+        }))(TableCell);
+    
+        const StyledTableRow = withStyles((theme) => ({
+            root: {
+              '&:nth-of-type(odd)': {
+                backgroundColor: theme.palette.action.hover,
+              },
+            },
+          }))(TableRow);
+    
+          const classes = makeStyles({
+            table: {
+              minWidth: 700,
+            },
+          });
         sillonService.viewAll().then(res => {
             this.setState({ sillones: res.data.map(sillon =>
-                <tr key={sillon.id}>
-                <th>{sillon.id}</th>
-                <td>{sillon.numero_sillon}</td>
-                <td>{sillon.numero_sala}</td>
-                <td>{sillon.fecha_update}</td>
-                <td>{sillon.fecha_creacion}</td>
-                <td>
+               <StyledTableRow key= {sillon.id}>
+
+                <StyledTableCell component="th" scope="row">{sillon.id}</StyledTableCell>
+               <StyledTableCell >{sillon.numero_sillon}</StyledTableCell>
+                 <StyledTableCell >{sillon.numero_sala}</StyledTableCell>
+                 <StyledTableCell >{sillon.fecha_update}</StyledTableCell>
+                <StyledTableCell >{sillon.fecha_creacion}</StyledTableCell>
+                <StyledTableCell >
                 <Button variant="contained" color="inherit" onClick={this.loadSillonDetails} data={sillon.id}>Editar</Button>
-                </td>
-                <td>
+                </StyledTableCell>
+                <StyledTableCell >
                 <Button variant="contained" color="secondary" onClick={this.delete} startIcon={<DeleteIcon />} data={sillon.id}>Eliminar</Button>
-                </td>
+                </StyledTableCell>
                 
-                </tr>)
+                </StyledTableRow>)
             })
         })
     }
-
+    
     render() {
+
         
-    const StyledTableCell = withStyles((theme) => ({
-        body: {
-        fontSize: 14,
-        },
-    }))(TableCell);
-
-    const StyledTableRow = withStyles((theme) => ({
-        root: {
-          '&:nth-of-type(odd)': {
-            backgroundColor: theme.palette.action.hover,
-          },
-        },
-      }))(TableRow);
-
-      const classes = makeStyles({
-        table: {
-          minWidth: 700,
-        },
-      });
-
+        const StyledTableCell = withStyles((theme) => ({
+            body: {
+            fontSize: 14,
+            },
+        }))(TableCell);
+    
+        const StyledTableRow = withStyles((theme) => ({
+            root: {
+              '&:nth-of-type(odd)': {
+                backgroundColor: theme.palette.action.hover,
+              },
+            },
+          }))(TableRow);
+    
+          const classes = makeStyles({
+            table: {
+              minWidth: 700,
+            },
+          });
         return <> 
         <Modal show={this.state.addModal} onHide={this.toogleAddModal}>
             <Modal.Header closeButton>
@@ -230,26 +253,25 @@ class Sillones extends React.Component{
         
         </Modal.Body>
         <Modal.Footer>
-        <Button color="secondary" variant="contained" onClick={this.toogleEditModal}>
+        <Button variant="secondary" onClick={this.toogleEditModal}>
         Cancelar
         </Button>
-        <Button color="primary" ariant="contained" type="submit">
+        <Button variant="primary" type="submit">
         Guardar cambios
         </Button>
         </Modal.Footer>
         </Form>
         </Modal> 
-        <Container fixed >
+      
         <Button size="large" onClick={this.toogleAddModal} color="primary" variant="contained">Crear Sillon</Button>
 
         <Button size="large" href="/silloneseliminados" color="inherit" variant="contained">Historial de Sillones Borrados</Button>
         
-        </Container>
-        <Container fixed>
+  
         <TableContainer component={Paper}>
-        <Table  align="left"aria-label="customized table" ></Table>
+        <Table className={classes.table} aria-label="customized table" >
         <TableHead>
-        <TableRow class="highlight">
+        <TableRow >
         <StyledTableCell>Id</StyledTableCell>
         <StyledTableCell  >Número Sillón</StyledTableCell>
         <StyledTableCell>Número Sala</StyledTableCell>
@@ -257,11 +279,13 @@ class Sillones extends React.Component{
         <StyledTableCell >Fecha de creación</StyledTableCell>
         </TableRow>
         </TableHead>
-        <TableBody class="centered">
-        {this.state.sillones}
+        <TableBody >
+        {
+            this.state.sillones
+             }
     </TableBody>
+    </Table>
 </TableContainer>
-</Container>
             
         
       
