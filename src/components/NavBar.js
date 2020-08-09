@@ -15,6 +15,7 @@ render(){
   const classes = makeStyles((theme) => ({
     root: {
       flexGrow: 1,
+
     },
     menuButton: {
       marginRight: theme.spacing(2),
@@ -40,7 +41,7 @@ render(){
 
           <Button  href= "/equipos" color="inherit">Equipos</Button>
 
-          <Button  href= "/sillones" color="inherit">Ver Sillones</Button>
+          <Button  href= "/sillones" color="inherit">Sillones</Button>
           
         </Toolbar>
       </AppBar>

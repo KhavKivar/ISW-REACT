@@ -111,18 +111,18 @@ class EquipoRow extends React.Component{
                
 
            
-                
+                            <IconButton aria-label="delete"  style={{float:"right", display:"inline",width: "30%"}}
+
+              onClick={() => { this.removeEquipo(row.idEquipo)}} >
+              <DeleteIcon />
+              </IconButton>
 
                <EquipoModalEdit  updateValue = {this.props.updateEquipos}
                 data = {this.props.equipos} id = {row.idEquipo} >
                </EquipoModalEdit>
 
               
-               <IconButton aria-label="delete"  style={{float:"right", display:"inline",width: "30%"}}
-
-               onClick={() => { this.removeEquipo(row.idEquipo)}} >
-               <DeleteIcon />
-               </IconButton>
+            
 
                </TableCell>
          

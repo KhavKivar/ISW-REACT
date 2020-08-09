@@ -5,6 +5,11 @@ import Modal from '@material-ui/core/Modal';
 import Button from '@material-ui/core/Button';
 import CreateIcon from '@material-ui/icons/Create'
 import EquipoNew from './EquipoNew';
+import PropTypes from 'prop-types';
+import { withStyles } from '@material-ui/styles';
+
+
+
 
 
 function getModalStyle() {
@@ -18,12 +23,16 @@ function getModalStyle() {
   };
 }
 
+
+
+
 const useStyles = makeStyles((theme) => ({
   paper: {
     position: 'absolute',
     width: 600,
     backgroundColor: theme.palette.background.paper,
     border: '2px solid #000',
+    borderColor: 'red',
     boxShadow: theme.shadows[5],
     padding: theme.spacing(2, 4, 3),
     marginBottom:30
@@ -39,8 +48,42 @@ const useStyles = makeStyles((theme) => ({
     height: 48,
     padding: '0 30px'
   },
-
 }));
+
+const styledBy = (property, mapping) => props => mapping[props[property]];
+
+const styles = {
+  root: {
+    background: styledBy('color', {
+      red: 'linear-gradient(45deg, #FE6B8B 30%, #FF8E53 90%)',
+      blue: 'linear-gradient(45deg, #2196F3 30%, #21CBF3 90%)',
+    }),
+    border: 0,
+    borderRadius: 3,
+    boxShadow: styledBy('color', {
+      red: '0 3px 5px 2px rgba(255, 105, 135, .3)',
+      blue: '0 3px 5px 2px rgba(33, 203, 243, .3)',
+    }),
+    color: 'white',
+    height: 48,
+    padding: '0 30px',
+  },
+};
+
+function MyButtonRaw(props) {
+  const { classes, color, ...other } = props;
+  return <Button className={classes.root} {...other} />;
+}
+
+MyButtonRaw.propTypes = {
+  classes: PropTypes.object.isRequired,
+  color: PropTypes.string.isRequired,
+};
+
+const MyButton = withStyles(styles)(MyButtonRaw);
+
+
+
 
 export default function SimpleModal(props) {
   
@@ -71,20 +114,17 @@ export default function SimpleModal(props) {
   return (
     <div>
 
-<Button
-        variant="contained"
-        color="secondary"
-        
 
-        className={classes.button}
+        <MyButton
+        variant="contained"
+        color="red"
         startIcon={<CreateIcon />}
         onClick={handleOpen}
-        
-
-
       >
         Agregar
-      </Button>
+      </MyButton>
+
+
 
       <Modal
         open={open}
