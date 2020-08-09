@@ -14,6 +14,7 @@ import UserComponet from './components/Equipo/UserComponent';
 
 import EquipoComponent from './components/Equipo/EquipoComponent';
 import Sillones from './components/SillonesComponent';
+import HistorialSillones from './components/HistorialSillones'
 
 import Container from '@material-ui/core/Container';
 
@@ -45,6 +46,11 @@ function App() {
           <Route path="/sillones">
             <div>
             <Sillones></Sillones>
+            </div>
+          </Route> 
+          <Route path="/silloneseliminados">
+            <div>
+            <HistorialSillones></HistorialSillones>
             </div>
           </Route> 
         </Switch>

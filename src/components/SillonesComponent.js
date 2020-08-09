@@ -58,6 +58,9 @@ class Sillones extends React.Component{
 
     loadSillonDetails(e) {
         let id = e.target.getAttribute('data')
+        if (id == undefined)
+            id = e.target.parentNode.getAttribute('data')
+        console.log(id)
         let ss = sillonService.viewSillon(id)
         console.log(ss)
         ss.then(res => {
@@ -94,47 +97,47 @@ class Sillones extends React.Component{
         delete data["fecha_retirado"]
         console.log(data)
         let ss = sillonService.editSillon(this.state.editDetails.id, data)
-        console.log(ss)
         ss.then(res => {
             let data = res.data
             
-            let newState = this.state.sillones.map(sillon => {
-                console.log(sillon.id, this.state.editDetails.id)
-                if (sillon.id === this.state.editDetails.id) {
-                    console.log("cambio")
-                    return <>
-                        <tr key={data.id}>
-                            <th>{data.id}</th>
-                            <td>{data.numero_sillon}</td>
-                            <td>{data.numero_sala}</td>
-                            <td>{data.fecha_update}</td>
-                            <td>{data.fecha_creacion}</td>
-                            <td>
-                                <Button variant="contained" color="inherit" onClick={this.loadSillonDetails} data={sillon.id}>Editar</Button>
-                            </td>
-                            <td>
-                                <Button variant="contained" color="secondary" startIcon={<DeleteIcon />} onClick={this.delete} data={sillon.id}>Eliminar</Button>
-                            </td>
+        //     let newState = this.state.sillones.map(sillon => {
+        //         console.log(sillon.id, this.state.editDetails.id)
+        //         if (sillon.id === this.state.editDetails.id) {
+        //             console.log("cambio")
+        //             return <>
+        //                 <tr key={data.id}>
+        //                     <th>{data.id}</th>
+        //                     <td>{data.numero_sillon}</td>
+        //                     <td>{data.numero_sala}</td>
+        //                     <td>{data.fecha_update}</td>
+        //                     <td>{data.fecha_creacion}</td>
+        //                     <td>
+        //                         <Button variant="contained" color="inherit" onClick={this.loadSillonDetails} data={sillon.id}>Editar</Button>
+        //                     </td>
+        //                     <td>
+        //                         <Button variant="contained" color="secondary" startIcon={<DeleteIcon />} onClick={this.delete} data={sillon.id}>Eliminar</Button>
+        //                     </td>
                             
-                        </tr>)
-                    </>
-                }
-                return sillon
-            })
-            this.setState({sillones: newState})
+        //                 </tr>)
+        //             </>
+        //         }
+        //         return sillon
+        //     })
+        //     this.setState({sillones: newState})
         })
-
         this.toogleEditModal()
     }
-    
+   
     delete(e) {
-        console.log(e.target)
+        let id = e.target.getAttribute('data')
+        if (id == undefined)
+            id = e.target.parentNode.getAttribute('data')
         var data = {"data": {"motivo": "Sin definir"}}
         var motivo = prompt("Ingrese Motivo de deshabilitación", "Sin definir")
         if (motivo === null) return
         data.data.motivo = motivo
         
-        let deletePromise = sillonService.deleteSillon(e.target.getAttribute('data'), data)
+        let deletePromise = sillonService.deleteSillon(id, data)
         deletePromise.then(res => {
             alert("Sillon deshabilitado")
             this.refreshPage()
@@ -229,10 +232,10 @@ class Sillones extends React.Component{
         
         </Modal.Body>
         <Modal.Footer>
-        <Button variant="secondary" onClick={this.toogleEditModal}>
+        <Button color="secondary" variant="contained" onClick={this.toogleEditModal}>
         Cancelar
         </Button>
-        <Button variant="primary" type="submit">
+        <Button color="primary" ariant="contained" type="submit">
         Guardar cambios
         </Button>
         </Modal.Footer>
@@ -241,7 +244,8 @@ class Sillones extends React.Component{
         <Container fixed >
         <Button size="large" onClick={this.toogleAddModal} color="primary" variant="contained">Crear Sillon</Button>
 
-        <Button size="large"onClick={this.toogleAddModal} color="inherit" variant="contained">Historial de Sillones Borrados</Button>
+        <Button size="large" href="/silloneseliminados" color="inherit" variant="contained">Historial de Sillones Borrados</Button>
+        
         </Container>
         <Container fixed>
         <TableContainer component={Paper}>
