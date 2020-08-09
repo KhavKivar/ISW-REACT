@@ -65,9 +65,10 @@ class HistorialSillones extends React.Component{
             return <>
             <Container>
             <Container fixed >
+            <br></br>
         <Button size="large" href="/sillones" color="inherit" variant="contained">Ver Sillones Disponibles</Button>
         <Button size="large" href="/silloneseliminadoslist" color="inherit" variant="contained">Ver Sillones Eliminados</Button>
-        
+        <br></br>
         
         </Container>
               <TableContainer component={Paper}>

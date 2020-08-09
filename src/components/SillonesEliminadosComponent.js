@@ -12,6 +12,7 @@ import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
+import UndoIcon from '@material-ui/icons/Undo';
 //Bootstrap
 import 'bootstrap/dist/css/bootstrap.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min';
@@ -81,7 +82,7 @@ class SillonesEliminados extends React.Component{
                 <td>{sillon.fecha_retirado}</td>
                 <td>{sillon.fecha_creacion}</td>
                 <td>
-                <Button variant="contained" color="secondary" onClick={this.devolver} data={sillon.id}>Devolver Sillon</Button>
+                <Button variant="contained" color="primary" onClick={this.devolver} startIcon={<UndoIcon />} data={sillon.id}>Devolver Sillon</Button>
                 </td>
                 
                 </tr>)
@@ -112,10 +113,12 @@ class SillonesEliminados extends React.Component{
       });
 
         return <> 
+        <br></br>
         <Container>
         <Button size="large" href="/sillones" color="inherit" variant="contained">Ver Sillones Disponibles</Button>
         <Button size="large" href="/silloneseliminados" color="inherit" variant="contained">Historial de Sillones Borrados</Button>
         </Container>
+        <br></br>
         <Container fixed>
         <TableContainer component={Paper}>
         <Table  align="left"aria-label="customized table" ></Table>
