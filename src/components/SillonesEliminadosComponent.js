@@ -1,4 +1,4 @@
-import sillonService from './services/SillonService';
+import sillonService from '../services/SillonService.js';
 import React from 'react';
 import { Button } from '@material-ui/core';
 import { Container } from '@material-ui/core';
@@ -76,9 +76,7 @@ class SillonesEliminados extends React.Component{
         sillonService.viewBorrados().then(res => {
             this.setState({ sillones: res.data.map(sillon => {
                 let creationDate = new Date(sillon.fecha_creacion).toLocaleString('es-CL')
-                let updateDate
-                if (sillon.fecha_eliminacion)
-                    updateDate = new Date(sillon.fecha_eliminacion).toLocaleString('es-CL')
+                let updateDate = new Date(sillon.fecha_retirado).toLocaleString('es-CL')
                 return <>
                     <tr key={sillon.id}>
                         <th>{sillon.id}</th>

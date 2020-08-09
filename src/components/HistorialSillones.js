@@ -1,4 +1,4 @@
-import sillonService from './services/SillonService';
+import sillonService from '../services/SillonService.js';
 import React from 'react';
 import { withStyles, makeStyles } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
@@ -29,9 +29,7 @@ class HistorialSillones extends React.Component{
           
           this.setState({sillones: res.data.map( sillon=> {
             let creationDate = new Date(sillon.fecha_creacion).toLocaleString('es-CL')
-            let updateDate
-            if (sillon.fecha_eliminacion)
-              updateDate = new Date(sillon.fecha_eliminacion).toLocaleString('es-CL')
+            let updateDate = new Date(sillon.fecha_eliminacion).toLocaleString('es-CL')
 
             return <>
               <tr key={sillon.id}>
