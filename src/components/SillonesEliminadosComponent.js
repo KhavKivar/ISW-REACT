@@ -74,18 +74,24 @@ class SillonesEliminados extends React.Component{
     }
     getsillones() {
         sillonService.viewBorrados().then(res => {
-            this.setState({ sillones: res.data.map(sillon =>
-                <tr key={sillon.id}>
-                <th>{sillon.id}</th>
-                <td>{sillon.numero_sillon}</td>
-                <td>{sillon.numero_sala}</td>
-                <td>{sillon.fecha_retirado}</td>
-                <td>{sillon.fecha_creacion}</td>
-                <td>
+            this.setState({ sillones: res.data.map(sillon => {
+                let creationDate = new Date(sillon.fecha_creacion).toLocaleString('es-CL')
+                let updateDate
+                if (sillon.fecha_eliminacion)
+                    updateDate = new Date(sillon.fecha_eliminacion).toLocaleString('es-CL')
+                return <>
+                    <tr key={sillon.id}>
+                        <th>{sillon.id}</th>
+                        <td>{sillon.numero_sillon}</td>
+                        <td>{sillon.numero_sala}</td>
+                        <td>{updateDate}</td>
+                        <td>{creationDate}</td>
+                        <td>
                 <Button variant="contained" color="primary" onClick={this.devolver} startIcon={<UndoIcon />} data={sillon.id}>Devolver Sillon</Button>
-                </td>
-                
-                </tr>)
+                        </td>
+                    </tr>
+                </>
+            })   
             })
         })
     }
@@ -121,7 +127,7 @@ class SillonesEliminados extends React.Component{
         <br></br>
         <Container fixed>
         <TableContainer component={Paper}>
-        <Table  align="left"aria-label="customized table" ></Table>
+        <Table  align="left"aria-label="customized table" >
         <TableHead>
         <TableRow class="highlight">
         <StyledTableCell>Id</StyledTableCell>
@@ -129,11 +135,13 @@ class SillonesEliminados extends React.Component{
         <StyledTableCell>Número Sala</StyledTableCell>
         <StyledTableCell >Fecha de Eliminado</StyledTableCell>
         <StyledTableCell >Fecha de creación</StyledTableCell>
+        <StyledTableCell ></StyledTableCell>
         </TableRow>
         </TableHead>
         <TableBody class="centered">
         {this.state.sillones}
     </TableBody>
+    </Table>
 </TableContainer>
 </Container>
             
