@@ -32,7 +32,7 @@ const useStyles = makeStyles((theme) => ({
     width: 600,
     backgroundColor: theme.palette.background.paper,
     border: '2px solid #000',
-    borderColor: 'red',
+    borderColor: 'rblack',
     boxShadow: theme.shadows[5],
     padding: theme.spacing(2, 4, 3),
     marginBottom:30
