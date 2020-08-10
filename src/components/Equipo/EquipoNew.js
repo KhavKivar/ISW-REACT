@@ -9,7 +9,8 @@ import Button from '@material-ui/core/Button';
 
 import SaveIcon from '@material-ui/icons/Save';
 import Widget from './Widget'
-import 'react-dual-listbox/lib/react-dual-listbox.css';
+
+
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/styles';
 import ButtonNew from './ButtonNew'
