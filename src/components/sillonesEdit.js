@@ -84,6 +84,7 @@ class EditSillonModal extends  React.Component {
                         id="numero_sala"
                         label="Sala del sillón"
                         placeholder="Ingresa Sala del sillón"
+                        type="number"
                         onChange={this.handleChange}
                         value={this.state.numero_sala}
                         disabled={this.state.progress}

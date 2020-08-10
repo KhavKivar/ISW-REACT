@@ -80,6 +80,7 @@ class AddSillonModal extends  React.Component {
                         />
                         <TextField
                         id="numero_sala"
+                        type="number"
                         label="Sala del sillón"
                         placeholder="Ingresa Sala del sillón"
                         onChange={this.handleChange}
