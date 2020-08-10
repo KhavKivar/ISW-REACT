@@ -30,6 +30,7 @@ class Sillones extends React.Component{
         this.loadSillonDetails = this.loadSillonDetails.bind(this);
         this.addSillon = this.addSillon.bind(this);
         this.editSillon = this.editSillon.bind(this);
+        this.renderTableContents = this.renderTableContents.bind(this);
 
     }
     
@@ -47,22 +48,18 @@ class Sillones extends React.Component{
     }
     handleEditChange(event) {
         const target = event.target;
-        console.log(this.state.editDetails)
         this.setState(prevState => ({
             editDetails: {
                 ...prevState.editDetails,
                  [target.id]: target.value}
         }))
-        console.log(this.state.editDetails)
     }
 
     loadSillonDetails(e) {
         let id = e.target.getAttribute('data')
         if (id == undefined)
             id = e.target.parentNode.getAttribute('data')
-        console.log(id)
         let ss = sillonService.viewSillon(id)
-        console.log(ss)
         ss.then(res => {
             this.setState({editDetails: res.data})
         })
@@ -83,9 +80,12 @@ class Sillones extends React.Component{
         e.preventDefault();
         let data = {...this.state.addDetails}
         data['activo'] = true
-        console.log(data)
         let ss = sillonService.createSillon(data)
-        console.log(ss)
+        ss.then(res => {
+            let newState = this.state.sillones
+            newState.unshift(res.data)
+            this.setState({'sillones': newState})
+        })
         this.toogleAddModal()
     }
     editSillon(e) {
@@ -95,35 +95,19 @@ class Sillones extends React.Component{
         delete data["fecha_creacion"]
         delete data["fecha_update"]
         delete data["fecha_retirado"]
-        console.log(data)
         let ss = sillonService.editSillon(this.state.editDetails.id, data)
         ss.then(res => {
             let data = res.data
             
-        //     let newState = this.state.sillones.map(sillon => {
-        //         console.log(sillon.id, this.state.editDetails.id)
-        //         if (sillon.id === this.state.editDetails.id) {
-        //             console.log("cambio")
-        //             return <>
-        //                 <tr key={data.id}>
-        //                     <th>{data.id}</th>
-        //                     <td>{data.numero_sillon}</td>
-        //                     <td>{data.numero_sala}</td>
-        //                     <td>{data.fecha_update}</td>
-        //                     <td>{data.fecha_creacion}</td>
-        //                     <td>
-        //                         <Button variant="contained" color="inherit" onClick={this.loadSillonDetails} data={sillon.id}>Editar</Button>
-        //                     </td>
-        //                     <td>
-        //                         <Button variant="contained" color="secondary" startIcon={<DeleteIcon />} onClick={this.delete} data={sillon.id}>Eliminar</Button>
-        //                     </td>
-                            
-        //                 </tr>)
-        //             </>
-        //         }
-        //         return sillon
-        //     })
-        //     this.setState({sillones: newState})
+            let newState = this.state.sillones.map(sillon => {
+                console.log(sillon.id === this.state.editDetails.id, sillon.id, this.state.editDetails.id)
+                if (sillon.id === this.state.editDetails.id) {
+                    console.log("cambio")
+                    return data
+                }
+                return sillon
+            })
+            this.setState({sillones: newState})
         })
         this.toogleEditModal()
     }
@@ -138,21 +122,30 @@ class Sillones extends React.Component{
         data.data.motivo = motivo
         
         let deletePromise = sillonService.deleteSillon(id, data)
-        deletePromise.then(res => {
+        deletePromise.then(() => {
             alert("Sillon deshabilitado")
-            this.refreshPage()
+            let del = this.state.sillones.filter(sillon => {
+                return parseInt(id) !== sillon.id})
+            this.setState({'sillones': del})
+            console.log(this.state.sillones)
         })
         
-        console.log(deletePromise)
     }
     getsillones() {
         sillonService.viewAll().then(res => {
-            this.setState({ sillones: res.data.map(sillon => {
-                    let creationDate = new Date(sillon.fecha_creacion).toLocaleString('es-CL')
-                    let updateDate
-                    if (sillon.fecha_update)
-                        updateDate = new Date(sillon.fecha_update).toLocaleString('es-CL')
-                    console.log(creationDate, updateDate)
+            this.setState({ sillones: res.data})
+        })
+    }
+
+    renderTableContents() {
+        console.log(this.state.sillones)
+        console.log(1231)
+        if (this.state.sillones) {
+            return this.state.sillones.map(sillon => {
+                let creationDate = new Date(sillon.fecha_creacion).toLocaleString('es-CL')
+                let updateDate
+                if (sillon.fecha_update)
+                    updateDate = new Date(sillon.fecha_update).toLocaleString('es-CL')
                 return  <>
                     <TableRow key={sillon.id}>
                         <TableCell component="th" scope="row">{sillon.id}</TableCell>
@@ -168,10 +161,8 @@ class Sillones extends React.Component{
                         </TableCell>
                     </TableRow>
                 </>
-                    })
-                
             })
-        })
+        }
     }
 
     render() {
@@ -205,7 +196,7 @@ class Sillones extends React.Component{
                 <Modal.Body>
                     <Form.Group controlId="numero_sillon">
                         <Form.Label>Número sillón</Form.Label>
-                        <Form.Control  type="number" placeholder="Ingresa Número sillón" onChange={this.handleAddChange} required/>
+                        <Form.Control  placeholder="Ingresa Número sillón" onChange={this.handleAddChange}/>
                     </Form.Group>
                     <Form.Group controlId="numero_sala">
                         <Form.Label>Sala del sillón</Form.Label>
@@ -231,7 +222,7 @@ class Sillones extends React.Component{
         <Modal.Body>
         <Form.Group controlId="numero_sillon">
         <Form.Label>Número sillón</Form.Label>
-        <Form.Control  type="number" value={this.state.editDetails.numero_sillon} placeholder="Ingresa Número sillón" onChange={this.handleEditChange} required/>
+        <Form.Control  value={this.state.editDetails.numero_sillon} placeholder="Ingresa Número sillón" onChange={this.handleEditChange} />
         </Form.Group>
         <Form.Group controlId="numero_sala">
         <Form.Label>Sala del sillón</Form.Label>
@@ -272,7 +263,7 @@ class Sillones extends React.Component{
                     </TableRow>
                 </TableHead>
                 <TableBody>
-                    {this.state.sillones}
+                    {this.renderTableContents()}
                 </TableBody>
             </Table>
         </TableContainer>
