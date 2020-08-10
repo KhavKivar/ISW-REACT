@@ -8,9 +8,13 @@ import {
   Route,
   Link
 } from "react-router-dom";
+
 import UserComponet from './components/UserComponent';
 import EquipoComponent from './components/EquipoComponent';
 import Sillones from './components/SillonesComponent';
+import SolicitudComponent from './components/solicitudComponent';
+import ReservaComponent from './components/reservaComponent';
+import SolicitudDetails from './components/solicitudDetails';
 
 function App() {
   return (
@@ -19,7 +23,7 @@ function App() {
       <div className="app">
         <NavBar></NavBar>
 
-        <Switch>
+        <Switch className="pt-5">
 
           <Route path="/personas">
             <div>
@@ -36,7 +40,23 @@ function App() {
             <div>
             <Sillones></Sillones>
             </div>
-          </Route> 
+          </Route>
+
+          <Route path="/solicitud">
+             <SolicitudComponent>
+             </SolicitudComponent>
+          </Route>
+
+          <Route exact path="/detallesSolicitud/:id">
+             <SolicitudDetails>
+             </SolicitudDetails>
+          </Route>
+
+          <Route path="/reservas">
+             <ReservaComponent>
+             </ReservaComponent>
+          </Route>
+
         </Switch>
       </div>
     </Router>

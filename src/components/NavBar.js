@@ -43,7 +43,10 @@ render(){
           <Button  href= "/equipos" color="inherit">Ver Equipos</Button>
 
           <Button  href= "/sillones" color="inherit">Ver Sillones</Button>
-          
+
+          <Button  href= "/solicitud" color="inherit">Gestionar Solicitudes</Button>
+
+          <Button  href= "/reservas" color="inherit">Gestionar Reservas</Button>
         </Toolbar>
       </AppBar>
     </div>
