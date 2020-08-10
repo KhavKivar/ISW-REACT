@@ -1,8 +1,7 @@
-import React,{useState} from 'react';
+import React from 'react';
+
 import axios from 'axios';
 
-
-import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
 import Box from '@material-ui/core/Box';
 import Collapse from '@material-ui/core/Collapse';
@@ -10,48 +9,92 @@ import IconButton from '@material-ui/core/IconButton';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
-import TableContainer from '@material-ui/core/TableContainer';
+
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Typography from '@material-ui/core/Typography';
-import Paper from '@material-ui/core/Paper';
+
 import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp';
-import { xml } from 'd3';
 
+import DeleteIcon from '@material-ui/icons/Delete';
+
+  import EditIcon from '@material-ui/icons/Edit';
+import EquipoModalEdit from './EquipoModalEdit'
 
 class EquipoRow extends React.Component{
     constructor(){
         super();
         this.state = {
-            open:   false
-        }
+            open:   false,
+            modal: false,
+            openv:false
+
+        } 
 
         
 
 
     }
+    abrirocerrar(){
+      this.state.setState({modal: this.state.modal});
 
 
-    
+    }
+
+  
+
+
+
+    removeEquipo(e){
+
+     
+      axios.delete('https://isw-nhr.herokuapp.com/api/equipos/delete/'+e.toString())
+      .then(res => {
+        const response = res.data;
+       
+        if(response === "Ok"){
+          let equipos = this.props.equipos;
+         var  eq = [];
+          for(const element of equipos){
+            if(element.idEquipo == e){
+              continue;
+
+            }
+            eq.push(element);
+          }
+          
+        }
+        this.props.updateEquipos(eq);
+        
+      });
+      
+
+
+    }
 
 
     render(){
         const { row } = this.props;
        
+
         const classes = makeStyles({
           root: {
             '& > *': {
               borderBottom: 'unset',
             },
           },
+          iconos:{
+            cursor:'pointer'
+          },
+          
         });
 
         return (
             <React.Fragment>
               <TableRow className={classes.root}>
                 <TableCell>
-                  <IconButton aria-label="expand row" size="small" onClick={() => this.setState({open:true})}>
+                  <IconButton aria-label="expand row" size="small" onClick={() => this.setState({open: !this.state.open})}>
                     {this.state.open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
                   </IconButton>
                 </TableCell>
@@ -61,6 +104,32 @@ class EquipoRow extends React.Component{
                 <TableCell align="right">{row.nameEquipo}</TableCell>
                 <TableCell align="right">{row.director}</TableCell>
                 <TableCell align="right">{row.integrantes}</TableCell>
+
+
+
+                <TableCell align="right">
+               
+
+           
+                            <IconButton aria-label="delete"  style={{float:"right", display:"inline",width: "30%"}}
+
+              onClick={() => { this.removeEquipo(row.idEquipo)}} >
+              <DeleteIcon />
+              </IconButton>
+
+               <EquipoModalEdit  updateValue = {this.props.updateEquipos}
+                data = {this.props.equipos} id = {row.idEquipo} >
+               </EquipoModalEdit>
+
+              
+            
+
+               </TableCell>
+         
+
+
+        
+
               </TableRow>
               <TableRow>
                 <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
@@ -105,7 +174,7 @@ class EquipoRow extends React.Component{
             </React.Fragment>
           );
 
-
+         
     }
 
 

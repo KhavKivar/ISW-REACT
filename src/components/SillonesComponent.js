@@ -8,6 +8,7 @@ import AddSillonModal from './sillonesAdd'
 import EditSillonModal from './sillonesEdit'
 
 
+
 class Sillones extends React.Component{
     constructor(props) {
         super(props);

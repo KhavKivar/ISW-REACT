@@ -16,11 +16,8 @@ class UserComponet extends React.Component{
 
         super();
         this.state = {
-
             users:[]
-
         };
-
 
     }
     componentDidMount(){

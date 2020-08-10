@@ -5,14 +5,23 @@ import NavBar from './components/NavBar';
 import {
   BrowserRouter as Router,
   Switch,
-  Route,
-  Link
+  Route
 } from "react-router-dom";
-import UserComponet from './components/UserComponent';
-import EquipoComponent from './components/EquipoComponent';
+import UserComponet from './components/Equipo/UserComponent';
+import Container from '@material-ui/core/Container';
+
+
+
+import EquipoComponent from './components/Equipo/EquipoComponent';
 import Sillones from './components/SillonesComponent';
 import HistorialSillones from './components/HistorialSillones'
 import SillonesEliminados from './components/SillonesEliminadosComponent'
+
+
+import SolicitudComponent from './components/solicitudComponent';
+import ReservaComponent from './components/reservaComponent';
+import SolicitudDetails from './components/solicitudDetails';
+
 function App() {
   return (
 
@@ -20,17 +29,21 @@ function App() {
       <div className="app">
         <NavBar></NavBar>
 
-        <Switch>
+        <Switch className="pt-5">
 
           <Route path="/personas">
-            <div>
+          <Container>
             <UserComponet></UserComponet>
-            </div>
+            </Container>
           </Route> 
 
+          
+          
           <Route path="/equipos">
+          <Container>
              <EquipoComponent></EquipoComponent>
 
+             </Container>
           </Route>
 
           <Route path="/sillones">
@@ -48,6 +61,23 @@ function App() {
             <SillonesEliminados></SillonesEliminados>
             </div>
           </Route>
+         
+
+          <Route path="/solicitud">
+             <SolicitudComponent>
+             </SolicitudComponent>
+          </Route>
+
+          <Route exact path="/detallesSolicitud/:id">
+             <SolicitudDetails>
+             </SolicitudDetails>
+          </Route>
+
+          <Route path="/reservas">
+             <ReservaComponent>
+             </ReservaComponent>
+          </Route>
+
         </Switch>
       </div>
     </Router>
