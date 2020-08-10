@@ -33,13 +33,14 @@ render(){
     },
     button:{
       marginRight:20
-    }
+    },
+   
   }));
 
 
 
   return (  
-      <AppBar position="sticky">
+      <AppBar position="sticky" style={{marginBottom:20}} >
         <Toolbar>
           <IconButton edge="start" className={classes.menuButton} 
           color="inherit" aria-label="menu">

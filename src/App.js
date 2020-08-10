@@ -8,7 +8,7 @@ import {
   Route
 } from "react-router-dom";
 import UserComponet from './components/Equipo/UserComponent';
-
+import Container from '@material-ui/core/Container';
 
 
 
@@ -16,6 +16,8 @@ import EquipoComponent from './components/Equipo/EquipoComponent';
 import Sillones from './components/SillonesComponent';
 import HistorialSillones from './components/HistorialSillones'
 import SillonesEliminados from './components/SillonesEliminadosComponent'
+
+
 
 function App() {
   return (
