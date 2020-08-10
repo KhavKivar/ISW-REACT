@@ -205,7 +205,7 @@ class Sillones extends React.Component{
                 <Modal.Body>
                     <Form.Group controlId="numero_sillon">
                         <Form.Label>Número sillón</Form.Label>
-                        <Form.Control  placeholder="Ingresa Número sillón" onChange={this.handleAddChange}/>
+                        <Form.Control  type="number" placeholder="Ingresa Número sillón" onChange={this.handleAddChange} required/>
                     </Form.Group>
                     <Form.Group controlId="numero_sala">
                         <Form.Label>Sala del sillón</Form.Label>
@@ -231,7 +231,7 @@ class Sillones extends React.Component{
         <Modal.Body>
         <Form.Group controlId="numero_sillon">
         <Form.Label>Número sillón</Form.Label>
-        <Form.Control  value={this.state.editDetails.numero_sillon} placeholder="Ingresa Número sillón" onChange={this.handleEditChange} />
+        <Form.Control  type="number" value={this.state.editDetails.numero_sillon} placeholder="Ingresa Número sillón" onChange={this.handleEditChange} required/>
         </Form.Group>
         <Form.Group controlId="numero_sala">
         <Form.Label>Sala del sillón</Form.Label>
