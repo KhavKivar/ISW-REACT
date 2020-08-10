@@ -39,9 +39,7 @@ render(){
 
 
   return (  
-    <div className={classes.root} style = {{marginBottom:20}}>
       <AppBar position="sticky">
-
         <Toolbar>
           <IconButton edge="start" className={classes.menuButton} 
           color="inherit" aria-label="menu">
@@ -67,7 +65,6 @@ render(){
 
         </Toolbar>
       </AppBar>
-    </div>
   );
 }
 }

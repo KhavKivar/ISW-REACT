@@ -1,4 +1,4 @@
-import sillonService from './services/SillonService';
+import sillonService from '../services/SillonService.js';
 import React from 'react';
 import { withStyles, makeStyles } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
@@ -9,7 +9,7 @@ import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import { Container } from '@material-ui/core';
-
+import { Button } from '@material-ui/core';
 //Bootstrap
 import 'bootstrap/dist/css/bootstrap.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min';
@@ -26,14 +26,21 @@ class HistorialSillones extends React.Component{
     }
     componentDidMount(){
         sillonService.viewDeleted().then(res=> {
-          this.setState({sillones: res.data.map( sillon=>
-            <tr key={sillon.id}>
-            <td>{sillon.id_original_sillon}</td>
-            <td>{sillon.numero_sillon}</td>
-            <td>{sillon.motivo}</td>
-            <td>{sillon.fecha_creacion}</td>
-            <td>{sillon.fecha_eliminacion}</td>
-            </tr>)
+          
+          this.setState({sillones: res.data.map( sillon=> {
+            let creationDate = new Date(sillon.fecha_creacion).toLocaleString('es-CL')
+            let updateDate = new Date(sillon.fecha_eliminacion).toLocaleString('es-CL')
+
+            return <>
+              <tr key={sillon.id}>
+                <td>{sillon.id_original_sillon}</td>
+                <td>{sillon.numero_sillon}</td>
+                <td>{sillon.motivo}</td>
+                <td>{creationDate}</td>
+                <td>{updateDate}</td>
+              </tr>
+            </>
+          })
           })
         })
       }
@@ -62,8 +69,15 @@ class HistorialSillones extends React.Component{
     
             return <>
             <Container>
+            <Container fixed >
+            <br></br>
+        <Button size="large" href="/sillones" color="inherit" variant="contained">Ver Sillones Disponibles</Button>
+        <Button size="large" href="/silloneseliminadoslist" color="inherit" variant="contained">Ver Sillones Eliminados</Button>
+        <br></br>
+        
+        </Container>
               <TableContainer component={Paper}>
-              <Table  align="left"aria-label="customized table" ></Table>
+              <Table  align="left"aria-label="customized table" >
               <TableHead>
               <TableRow class="highlight">
               <StyledTableCell>Id Original</StyledTableCell>
@@ -76,6 +90,7 @@ class HistorialSillones extends React.Component{
               <TableBody class="centered">
               {this.state.sillones}
           </TableBody>
+        </Table>
       </TableContainer>
       </Container>
                         </>
