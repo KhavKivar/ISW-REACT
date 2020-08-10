@@ -74,11 +74,13 @@ class EditSillonModal extends  React.Component {
                         <TextField
                         id="numero_sillon"
                         label="Número sillón"
+                        type="number"
                         placeholder="Ingresa Número sillón"
                         onChange={this.handleChange}
                         value={this.state.numero_sillon}
                         disabled={this.state.progress}
                         fullWidth
+                        required
                         />
                         <TextField
                         id="numero_sala"
@@ -96,7 +98,7 @@ class EditSillonModal extends  React.Component {
                             Cancelar
                         </Button>
                         <Button color="primary" variant="contained" type="submit">
-                            Crear sillón
+                            Guardar Cambios
                         </Button>
                     </DialogActions>
                 </form>

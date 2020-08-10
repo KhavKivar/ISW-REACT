@@ -74,9 +74,11 @@ class AddSillonModal extends  React.Component {
                         <TextField
                         id="numero_sillon"
                         label="Número sillón"
+                        type="number"
                         placeholder="Ingresa Número sillón"
                         onChange={this.handleChange}
                         fullWidth
+                        required
                         />
                         <TextField
                         id="numero_sala"
