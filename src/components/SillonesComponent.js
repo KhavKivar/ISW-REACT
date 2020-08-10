@@ -1,32 +1,25 @@
 import sillonService from '../services/SillonService.js';
 import React from 'react';
-import { Button } from '@material-ui/core';
-import { Container } from '@material-ui/core';
-import Modal from 'react-bootstrap/Modal'
-import Form from 'react-bootstrap/Form'
 import { withStyles, makeStyles } from '@material-ui/core/styles';
-import Table from '@material-ui/core/Table';
-import TableBody from '@material-ui/core/TableBody';
-import TableCell from '@material-ui/core/TableCell';
-import TableContainer from '@material-ui/core/TableContainer';
-import TableHead from '@material-ui/core/TableHead';
-import TableRow from '@material-ui/core/TableRow';
-import Paper from '@material-ui/core/Paper';
-import DeleteIcon from '@material-ui/icons/Delete';
-import EditIcon from '@material-ui/icons/Edit';
-import AddIcon from '@material-ui/icons/Add';
+import { Button, Container, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Snackbar} from '@material-ui/core';
+import {Delete as DeleteIcon, Edit as EditIcon, Add as AddIcon} from '@material-ui/icons';
+import { Alert } from '@material-ui/lab'
+import AddSillonModal from './sillonesAdd'
+import EditSillonModal from './sillonesEdit'
+
+
 class Sillones extends React.Component{
     constructor(props) {
         super(props);
-        this.state = {sillones:[], editDetails: {}, addDetails: {}, addModal: false, editModal:false};
-        this.delete = this.delete.bind(this);
+        this.state = {sillones:[], editId: 0 , addModal: false, editModal:false, deleteSnack: false};
+        // this.delete = this.delete.bind(this);
         this.toogleAddModal = this.toogleAddModal.bind(this);
         this.toogleEditModal = this.toogleEditModal.bind(this);
         this.handleAddChange = this.handleAddChange.bind(this);
         this.handleEditChange = this.handleEditChange.bind(this);
-        this.loadSillonDetails = this.loadSillonDetails.bind(this);
-        this.addSillon = this.addSillon.bind(this);
-        this.editSillon = this.editSillon.bind(this);
+        // this.loadSillonDetails = this.loadSillonDetails.bind(this);
+        this.editTable = this.editTable.bind(this);
+        this.hideSnack = this.hideSnack.bind(this)
         this.renderTableContents = this.renderTableContents.bind(this);
 
     }
@@ -37,6 +30,7 @@ class Sillones extends React.Component{
     
     handleAddChange(event){
         const target = event.target;
+        console.log(target.value)
         this.setState(prevState => ({
             addDetails: {
                 ...prevState.addDetails,
@@ -45,19 +39,17 @@ class Sillones extends React.Component{
     }
     handleEditChange(event) {
         const target = event.target;
-        this.setState(prevState => ({
-            editDetails: {
-                ...prevState.editDetails,
-                 [target.id]: target.value}
-        }))
+        console.log(target.value)
+        let edition = this.state.editDetails
+        // edition[target.id] = target.value
+        // this.setState({editDetails: edition})
     }
 
-    loadSillonDetails(e) {
-        let id = e.target.getAttribute('data')
-        if (id == undefined)
-            id = e.target.parentNode.getAttribute('data')
+    loadSillonDetails(id, e) {
+        // console.log(id,e)
         let ss = sillonService.viewSillon(id)
         ss.then(res => {
+            console.log(res.data)
             this.setState({editDetails: res.data})
         })
         this.toogleEditModal()
@@ -68,51 +60,36 @@ class Sillones extends React.Component{
     toogleEditModal() {
         this.setState({editModal: !this.state.editModal})
     }
+    invokeEditModal(id) {
+        this.setState({editId: id})
+        console.log(this.state.editId)
+        this.toogleEditModal()
+    }
     
     componentDidMount() {
         this.getsillones()
     }
-    
-    addSillon(e) {
-        e.preventDefault();
-        let data = {...this.state.addDetails}
-        data['activo'] = true
-        let ss = sillonService.createSillon(data)
-        ss.then(res => {
-            let newState = this.state.sillones
-            newState.unshift(res.data)
-            this.setState({'sillones': newState})
-        })
-        this.toogleAddModal()
+
+    hideSnack() {
+        this.setState({deleteSnack: false})
     }
-    editSillon(e) {
-        e.preventDefault();
-        let data = {...this.state.editDetails}
-        delete data["id"]
-        delete data["fecha_creacion"]
-        delete data["fecha_update"]
-        delete data["fecha_retirado"]
-        let ss = sillonService.editSillon(this.state.editDetails.id, data)
-        ss.then(res => {
-            let data = res.data
-            
-            let newState = this.state.sillones.map(sillon => {
-                console.log(sillon.id === this.state.editDetails.id, sillon.id, this.state.editDetails.id)
-                if (sillon.id === this.state.editDetails.id) {
-                    console.log("cambio")
-                    return data
-                }
-                return sillon
-            })
-            this.setState({sillones: newState})
+    
+    editTable(newSillon) {
+        let changed = false
+        let newState = this.state.sillones.map(sillon => {
+            if (sillon.id === newSillon) {
+                changed = !changed
+                return newSillon
+            }
+            return sillon
         })
-        this.toogleEditModal()
+        if (!changed)
+            newState.unshift(newSillon)
+        this.setState({sillones: newState})
     }
    
-    delete(e) {
-        let id = e.target.getAttribute('data')
-        if (id == undefined)
-            id = e.target.parentNode.getAttribute('data')
+    delete(id, e) {
+
         var data = {"data": {"motivo": "Sin definir"}}
         var motivo = prompt("Ingrese Motivo de deshabilitación", "Sin definir")
         if (motivo === null) return
@@ -120,7 +97,7 @@ class Sillones extends React.Component{
         
         let deletePromise = sillonService.deleteSillon(id, data)
         deletePromise.then(() => {
-            alert("Sillon deshabilitado")
+            this.setState({deleteSnack: true})
             let del = this.state.sillones.filter(sillon => {
                 return parseInt(id) !== sillon.id})
             this.setState({'sillones': del})
@@ -128,6 +105,7 @@ class Sillones extends React.Component{
         
     }
     getsillones() {
+        console.log('aqui')
         sillonService.viewAll().then(res => {
             this.setState({ sillones: res.data})
         })
@@ -148,10 +126,10 @@ class Sillones extends React.Component{
                         <TableCell>{updateDate}</TableCell>
                         <TableCell>{creationDate}</TableCell>
                         <TableCell>
-                            <Button variant="contained" color="inherit" onClick={this.loadSillonDetails} startIcon={<EditIcon />} data={sillon.id}>Editar</Button>
+                            <Button variant="contained" color="inherit" onClick={this.invokeEditModal.bind(this, sillon.id)} startIcon={<EditIcon />}>Editar</Button>
                         </TableCell>
                         <TableCell>
-                            <Button variant="contained" color="secondary" onClick={this.delete} startIcon={<DeleteIcon />} data={sillon.id}>Eliminar</Button>
+                            <Button variant="contained" color="secondary" onClick={this.delete.bind(this, sillon.id)} startIcon={<DeleteIcon />}>Eliminar</Button>
                         </TableCell>
                     </TableRow>
                 </>
@@ -167,73 +145,23 @@ class Sillones extends React.Component{
         },
     }))(TableCell);
 
-    const StyledTableRow = withStyles((theme) => ({
-        root: {
-          '&:nth-of-type(odd)': {
-            backgroundColor: theme.palette.action.hover,
-          },
-        },
-      }))(TableRow);
+    // const StyledTableRow = withStyles((theme) => ({
+    //     root: {
+    //       '&:nth-of-type(odd)': {
+    //         backgroundColor: theme.palette.action.hover,
+    //       },
+    //     },
+    //   }))(TableRow);
 
-      const classes = makeStyles({
-        table: {
-          minWidth: 700,
-        },
-      });
+    //   const classes = makeStyles({
+    //     table: {
+    //       minWidth: 700,
+    //     },
+    //   });
 
         return <> 
-        <Modal show={this.state.addModal} onHide={this.toogleAddModal}>
-            <Modal.Header closeButton>
-                <Modal.Title>Agregar Sillón</Modal.Title>
-            </Modal.Header>
-            <Form onSubmit={this.addSillon}>
-                <Modal.Body>
-                    <Form.Group controlId="numero_sillon">
-                        <Form.Label>Número sillón</Form.Label>
-                        <Form.Control  placeholder="Ingresa Número sillón" onChange={this.handleAddChange}/>
-                    </Form.Group>
-                    <Form.Group controlId="numero_sala">
-                        <Form.Label>Sala del sillón</Form.Label>
-                        <Form.Control type="number" placeholder="Ingresa Sala del sillón" onChange={this.handleAddChange} />
-                    </Form.Group>
-                    
-                </Modal.Body>
-                <Modal.Footer>
-                    <Button color="secondary" variant="contained" onClick={this.toogleAddModal}>
-                    Cancelar
-                    </Button>
-                    <Button color="primary" variant="contained" type="submit">
-                    Crear sillón
-                    </Button>
-                </Modal.Footer>
-            </Form>
-        </Modal> 
-        <Modal show={this.state.editModal} onHide={this.toogleEditModal}>
-        <Modal.Header closeButton>
-        <Modal.Title>Editar Sillón</Modal.Title>
-        </Modal.Header>
-        <Form onSubmit={this.editSillon} >
-        <Modal.Body>
-        <Form.Group controlId="numero_sillon">
-        <Form.Label>Número sillón</Form.Label>
-        <Form.Control  value={this.state.editDetails.numero_sillon} placeholder="Ingresa Número sillón" onChange={this.handleEditChange} />
-        </Form.Group>
-        <Form.Group controlId="numero_sala">
-        <Form.Label>Sala del sillón</Form.Label>
-        <Form.Control type="number" value={this.state.editDetails.numero_sala} placeholder="Ingresa Sala del sillón" onChange={this.handleEditChange} />
-        </Form.Group>
-        
-        </Modal.Body>
-        <Modal.Footer>
-        <Button color="secondary" variant="contained" onClick={this.toogleEditModal}>
-        Cancelar
-        </Button>
-        <Button color="primary" ariant="contained" type="submit">
-        Guardar cambios
-        </Button>
-        </Modal.Footer>
-        </Form>
-        </Modal> 
+        <AddSillonModal show={this.state.addModal} toogle={this.toogleAddModal} updateTable={this.editTable}></AddSillonModal>
+        <EditSillonModal sillonId={this.state.editId} show={this.state.editModal} toogle={this.toogleEditModal} updateTable={this.editTable}></EditSillonModal>
         <br></br>
         <Container fixed >
         <Button startIcon={<AddIcon />} size="large" onClick={this.toogleAddModal} color="primary" variant="contained">Crear Sillon</Button>
@@ -246,7 +174,7 @@ class Sillones extends React.Component{
         <TableContainer component={Paper}>
             <Table  align="left"aria-label="customized table">
                 <TableHead>
-                    <TableRow>
+                    <TableRow >
                         <StyledTableCell>Id</StyledTableCell>
                         <StyledTableCell >Número Sillón</StyledTableCell>
                         <StyledTableCell>Número Sala</StyledTableCell>
@@ -262,6 +190,13 @@ class Sillones extends React.Component{
             </Table>
         </TableContainer>
         </Container>
+        <Snackbar
+            open={this.state.deleteSnack}
+            autoHideDuration={3000}
+            onClose={this.hideSnack}
+            >
+                <Alert severity="success">¡Sillón eliminado con exito!"</Alert>
+            </Snackbar>
         </>
     }
 }

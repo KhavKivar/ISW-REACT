@@ -1,17 +1,10 @@
 import sillonService from '../services/SillonService.js';
 import React from 'react';
-import { Button } from '@material-ui/core';
-import { Container } from '@material-ui/core';
-import Modal from 'react-bootstrap/Modal'
-import Form from 'react-bootstrap/Form'
 import { withStyles, makeStyles } from '@material-ui/core/styles';
-import Table from '@material-ui/core/Table';
-import TableBody from '@material-ui/core/TableBody';
-import TableCell from '@material-ui/core/TableCell';
-import TableContainer from '@material-ui/core/TableContainer';
-import TableHead from '@material-ui/core/TableHead';
-import TableRow from '@material-ui/core/TableRow';
-import Paper from '@material-ui/core/Paper';
+import { Button, Container, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Snackbar} from '@material-ui/core';
+import { Alert } from '@material-ui/lab'
+
+
 import UndoIcon from '@material-ui/icons/Undo';
 //Bootstrap
 import 'bootstrap/dist/css/bootstrap.css';
@@ -19,9 +12,10 @@ import 'bootstrap/dist/js/bootstrap.bundle.min';
 class SillonesEliminados extends React.Component{
     constructor(props) {
         super(props);
-        this.state = {sillones:[]};
+        this.state = {sillones:[], deleteSnack: false};
         this.renderTableContents = this.renderTableContents.bind(this);
         this.devolver = this.devolver.bind(this)
+        this.hideSnack = this.hideSnack.bind(this)
 
     }
     
@@ -37,7 +31,9 @@ class SillonesEliminados extends React.Component{
         this.getsillones()
     }
     
- 
+    hideSnack() {
+        this.setState({deleteSnack: false})
+    }
    
     devolver(e) {
         let id = e.target.getAttribute('data')
@@ -45,7 +41,7 @@ class SillonesEliminados extends React.Component{
             id = e.target.parentNode.getAttribute('data')
         let revivePromise = sillonService.reviveDeleted(id)
         revivePromise.then(res => {
-            alert("Sillon habilitado")
+            this.setState({deleteSnack: true})
             let del = this.state.sillones.filter(sillon => {
                 return parseInt(id) !== sillon.id})
             this.setState({'sillones': del})        })
@@ -128,7 +124,13 @@ class SillonesEliminados extends React.Component{
     </Table>
 </TableContainer>
 </Container>
-            
+<Snackbar
+            open={this.state.deleteSnack}
+            autoHideDuration={3000}
+            onClose={this.hideSnack}
+            >
+                <Alert severity="success">¡Sillón habilitado con exito!"</Alert>
+            </Snackbar>
         
       
         </>
