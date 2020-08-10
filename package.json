@@ -14,17 +14,13 @@
     "d3-ease": "^1.0.6",
     "d3-interpolate": "^1.4.0",
     "jquery": "^3.5.1",
-    "material-table": "^1.68.0",
     "materialize-css": "^1.0.0-rc.2",
     "popper.js": "^1.16.1",
     "react": "^16.13.1",
     "react-bootstrap": "^1.3.0",
     "react-dom": "^16.13.1",
-    "react-draggable": "^4.4.3",
-    "react-dual-listbox": "^2.0.0",
     "react-router-dom": "^5.2.0",
-    "react-scripts": "3.4.1",
-    "serve": "^11.3.2"
+    "react-scripts": "3.4.1"
   },
   "scripts": {
     "start": "serve -s build",
