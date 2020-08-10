@@ -170,9 +170,9 @@ class Sillones extends React.Component{
         <Button size="large" href="/silloneseliminados" color="inherit" variant="contained">Historial de Sillones Borrados</Button>
         </Container>
         <br></br>
-        <Container>
-        <TableContainer component={Paper}>
-            <Table  align="left"aria-label="customized table">
+        <Container >
+        <TableContainer style={{maxHeight:"70vh", overflow:"auto"}} component={Paper}>
+            <Table stickyHeader align="left"aria-label="customized table">
                 <TableHead>
                     <TableRow >
                         <StyledTableCell>Id</StyledTableCell>
