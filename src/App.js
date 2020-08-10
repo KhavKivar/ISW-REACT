@@ -18,6 +18,9 @@ import HistorialSillones from './components/HistorialSillones'
 import SillonesEliminados from './components/SillonesEliminadosComponent'
 
 
+import SolicitudComponent from './components/solicitudComponent';
+import ReservaComponent from './components/reservaComponent';
+import SolicitudDetails from './components/solicitudDetails';
 
 function App() {
   return (
@@ -26,7 +29,7 @@ function App() {
       <div className="app">
         <NavBar></NavBar>
 
-        <Switch>
+        <Switch className="pt-5">
 
           <Route path="/personas">
           <Container>
@@ -58,6 +61,23 @@ function App() {
             <SillonesEliminados></SillonesEliminados>
             </div>
           </Route>
+         
+
+          <Route path="/solicitud">
+             <SolicitudComponent>
+             </SolicitudComponent>
+          </Route>
+
+          <Route exact path="/detallesSolicitud/:id">
+             <SolicitudDetails>
+             </SolicitudDetails>
+          </Route>
+
+          <Route path="/reservas">
+             <ReservaComponent>
+             </ReservaComponent>
+          </Route>
+
         </Switch>
       </div>
     </Router>

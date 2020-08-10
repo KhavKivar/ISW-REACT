@@ -60,10 +60,10 @@ render(){
           <Button    startIcon={<Sillon/>}  className={classes.Button}  href= "/sillones" color="inherit">Sillones</Button>
 
 
-          <Button   className={classes.Button} 
-          
-          href= "/" color="inherit">Reservas</Button>
 
+          <Button  href= "/solicitud" color="inherit">Gestionar Solicitudes</Button>
+
+          <Button  href= "/reservas" color="inherit">Gestionar Reservas</Button>
         </Toolbar>
       </AppBar>
   );
