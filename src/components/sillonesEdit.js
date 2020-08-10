@@ -81,6 +81,9 @@ class EditSillonModal extends  React.Component {
                         disabled={this.state.progress}
                         fullWidth
                         required
+                        inputProps={{
+                            autoComplete: 'off'
+                         }}
                         />
                         <TextField
                         id="numero_sala"
@@ -91,6 +94,9 @@ class EditSillonModal extends  React.Component {
                         value={this.state.numero_sala}
                         disabled={this.state.progress}
                         fullWidth
+                        inputProps={{
+                            autoComplete: 'off'
+                         }}
                         />
                     </DialogContent>
                     <DialogActions>

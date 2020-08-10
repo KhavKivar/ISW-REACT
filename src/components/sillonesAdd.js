@@ -79,6 +79,9 @@ class AddSillonModal extends  React.Component {
                         onChange={this.handleChange}
                         fullWidth
                         required
+                        inputProps={{
+                            autoComplete: 'off'
+                         }}
                         />
                         <TextField
                         id="numero_sala"
@@ -87,6 +90,9 @@ class AddSillonModal extends  React.Component {
                         placeholder="Ingresa Sala del sillón"
                         onChange={this.handleChange}
                         fullWidth
+                        inputProps={{
+                            autoComplete: 'off'
+                         }}
                         />
                     </DialogContent>
                     <DialogActions>

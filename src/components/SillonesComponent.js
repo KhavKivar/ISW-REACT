@@ -166,6 +166,7 @@ class Sillones extends React.Component{
         <Container fixed >
         <Button startIcon={<AddIcon />} size="large" onClick={this.toogleAddModal} color="primary" variant="contained">Crear Sillon</Button>
         <br></br>
+        <br></br>
         <Button size="large" href="/silloneseliminadoslist" color="inherit" variant="contained">Ver Sillones Eliminados</Button>
         <Button size="large" href="/silloneseliminados" color="inherit" variant="contained">Historial de Sillones Borrados</Button>
         </Container>
