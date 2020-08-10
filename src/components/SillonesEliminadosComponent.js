@@ -19,7 +19,9 @@ import 'bootstrap/dist/js/bootstrap.bundle.min';
 class SillonesEliminados extends React.Component{
     constructor(props) {
         super(props);
-        this.state = {sillones:[], editDetails: {}, addDetails: {}, addModal: false, editModal:false};
+        this.state = {sillones:[]};
+        this.renderTableContents = this.renderTableContents.bind(this);
+        this.devolver = this.devolver.bind(this)
 
     }
     
@@ -27,33 +29,10 @@ class SillonesEliminados extends React.Component{
         window.location.reload(false);
     }
     
-    handleAddChange(event){
-        const target = event.target;
-        this.setState(prevState => ({
-            addDetails: {
-                ...prevState.addDetails,
-                 [target.id]: target.value}
-        }));
-    }
-    handleEditChange(event) {
-        const target = event.target;
-        console.log(this.state.editDetails)
-        this.setState(prevState => ({
-            editDetails: {
-                ...prevState.editDetails,
-                 [target.id]: target.value}
-        }))
-        console.log(this.state.editDetails)
-    }
 
 
-    toogleAddModal() {
-        this.setState({addModal: !this.state.addModal})
-    }    
-    toogleEditModal() {
-        this.setState({editModal: !this.state.editModal})
-    }
-    
+
+
     componentDidMount() {
         this.getsillones()
     }
@@ -67,14 +46,22 @@ class SillonesEliminados extends React.Component{
         let revivePromise = sillonService.reviveDeleted(id)
         revivePromise.then(res => {
             alert("Sillon habilitado")
-            window.location.reload(false);
-        })
+            let del = this.state.sillones.filter(sillon => {
+                return parseInt(id) !== sillon.id})
+            this.setState({'sillones': del})        })
         
         console.log(revivePromise)
     }
     getsillones() {
         sillonService.viewBorrados().then(res => {
-            this.setState({ sillones: res.data.map(sillon => {
+            this.setState({ sillones: res.data
+            })
+        })
+    }
+
+    renderTableContents() {
+        if (this.state.sillones) {
+            return this.state.sillones.map(sillon => {
                 let creationDate = new Date(sillon.fecha_creacion).toLocaleString('es-CL')
                 let updateDate = new Date(sillon.fecha_retirado).toLocaleString('es-CL')
                 return <>
@@ -90,8 +77,7 @@ class SillonesEliminados extends React.Component{
                     </tr>
                 </>
             })   
-            })
-        })
+        }
     }
 
     render() {
@@ -137,7 +123,7 @@ class SillonesEliminados extends React.Component{
         </TableRow>
         </TableHead>
         <TableBody class="centered">
-        {this.state.sillones}
+        {this.renderTableContents()}
     </TableBody>
     </Table>
 </TableContainer>

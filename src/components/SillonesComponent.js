@@ -15,9 +15,6 @@ import Paper from '@material-ui/core/Paper';
 import DeleteIcon from '@material-ui/icons/Delete';
 import EditIcon from '@material-ui/icons/Edit';
 import AddIcon from '@material-ui/icons/Add';
-//Bootstrap
-import 'bootstrap/dist/css/bootstrap.css';
-import 'bootstrap/dist/js/bootstrap.bundle.min';
 class Sillones extends React.Component{
     constructor(props) {
         super(props);
@@ -127,7 +124,6 @@ class Sillones extends React.Component{
             let del = this.state.sillones.filter(sillon => {
                 return parseInt(id) !== sillon.id})
             this.setState({'sillones': del})
-            console.log(this.state.sillones)
         })
         
     }
@@ -138,8 +134,6 @@ class Sillones extends React.Component{
     }
 
     renderTableContents() {
-        console.log(this.state.sillones)
-        console.log(1231)
         if (this.state.sillones) {
             return this.state.sillones.map(sillon => {
                 let creationDate = new Date(sillon.fecha_creacion).toLocaleString('es-CL')
