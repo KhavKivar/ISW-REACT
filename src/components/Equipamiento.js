@@ -4,9 +4,9 @@ class Equipamiento extends Component {
     render(){
         return(
             <div> 
-                <body>
+
                     <EquipamientoTable/>
-                </body>             
+             
             </div>
         )
     }
