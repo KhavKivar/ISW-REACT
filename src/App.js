@@ -22,6 +22,7 @@ import SolicitudComponent from './components/solicitudComponent';
 import ReservaComponent from './components/reservaComponent';
 import SolicitudDetails from './components/solicitudDetails';
 
+import Equipamiento from './components/Equipamiento'
 
 
 
@@ -87,6 +88,13 @@ function App() {
              </ReservaComponent>
           </Route>
 
+          <Route path="/equipamiento">
+            <div>
+              <Container>
+                <Equipamiento/>
+              </Container>
+            </div>
+          </Route>
         </Switch>
          
         </Router>

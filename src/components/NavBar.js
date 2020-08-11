@@ -64,6 +64,9 @@ render(){
           <Button  href= "/solicitud" color="inherit">Solicitudes</Button>
 
           <Button  href= "/reservas" color="inherit">Reservas</Button>
+        
+          <Button href= "/equipamiento" color="inherit">Equipamiento</Button>
+          
         </Toolbar>
       </AppBar>
   );
