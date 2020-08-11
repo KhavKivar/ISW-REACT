@@ -10,7 +10,7 @@ import {
 import UserComponet from './components/Equipo/UserComponent';
 import Container from '@material-ui/core/Container';
 
-
+        
 
 import EquipoComponent from './components/Equipo/EquipoComponent';
 import Sillones from './components/SillonesComponent';
@@ -22,17 +22,26 @@ import SolicitudComponent from './components/solicitudComponent';
 import ReservaComponent from './components/reservaComponent';
 import SolicitudDetails from './components/solicitudDetails';
 
+
+
+
 function App() {
   return (
 
-    <Router>
-      <div className="app">
-        <NavBar></NavBar>
+   
+      <div className="app" >
 
+     
+        <NavBar  ></NavBar>
+      
+        
+       
+        <Router>
+       
         <Switch className="pt-5">
 
           <Route path="/personas">
-          <Container>
+          <Container >
             <UserComponet></UserComponet>
             </Container>
           </Route> 
@@ -79,8 +88,12 @@ function App() {
           </Route>
 
         </Switch>
-      </div>
-    </Router>
+         
+        </Router>
+        </div>
+    
+
+   
    
 
   );
