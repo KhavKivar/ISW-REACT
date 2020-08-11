@@ -1,17 +1,10 @@
 import sillonService from '../services/SillonService.js';
 import React from 'react';
-import { Button } from '@material-ui/core';
-import { Container } from '@material-ui/core';
-import Modal from 'react-bootstrap/Modal'
-import Form from 'react-bootstrap/Form'
 import { withStyles, makeStyles } from '@material-ui/core/styles';
-import Table from '@material-ui/core/Table';
-import TableBody from '@material-ui/core/TableBody';
-import TableCell from '@material-ui/core/TableCell';
-import TableContainer from '@material-ui/core/TableContainer';
-import TableHead from '@material-ui/core/TableHead';
-import TableRow from '@material-ui/core/TableRow';
-import Paper from '@material-ui/core/Paper';
+import { Button, Container, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Snackbar} from '@material-ui/core';
+import { Alert } from '@material-ui/lab'
+
+
 import UndoIcon from '@material-ui/icons/Undo';
 //Bootstrap
 import 'bootstrap/dist/css/bootstrap.css';
@@ -19,7 +12,10 @@ import 'bootstrap/dist/js/bootstrap.bundle.min';
 class SillonesEliminados extends React.Component{
     constructor(props) {
         super(props);
-        this.state = {sillones:[], editDetails: {}, addDetails: {}, addModal: false, editModal:false};
+        this.state = {sillones:[], deleteSnack: false};
+        this.renderTableContents = this.renderTableContents.bind(this);
+        this.devolver = this.devolver.bind(this)
+        this.hideSnack = this.hideSnack.bind(this)
 
     }
     
@@ -27,38 +23,17 @@ class SillonesEliminados extends React.Component{
         window.location.reload(false);
     }
     
-    handleAddChange(event){
-        const target = event.target;
-        this.setState(prevState => ({
-            addDetails: {
-                ...prevState.addDetails,
-                 [target.id]: target.value}
-        }));
-    }
-    handleEditChange(event) {
-        const target = event.target;
-        console.log(this.state.editDetails)
-        this.setState(prevState => ({
-            editDetails: {
-                ...prevState.editDetails,
-                 [target.id]: target.value}
-        }))
-        console.log(this.state.editDetails)
-    }
 
 
-    toogleAddModal() {
-        this.setState({addModal: !this.state.addModal})
-    }    
-    toogleEditModal() {
-        this.setState({editModal: !this.state.editModal})
-    }
-    
+
+
     componentDidMount() {
         this.getsillones()
     }
     
- 
+    hideSnack() {
+        this.setState({deleteSnack: false})
+    }
    
     devolver(e) {
         let id = e.target.getAttribute('data')
@@ -66,15 +41,23 @@ class SillonesEliminados extends React.Component{
             id = e.target.parentNode.getAttribute('data')
         let revivePromise = sillonService.reviveDeleted(id)
         revivePromise.then(res => {
-            alert("Sillon habilitado")
-            window.location.reload(false);
-        })
+            this.setState({deleteSnack: true})
+            let del = this.state.sillones.filter(sillon => {
+                return parseInt(id) !== sillon.id})
+            this.setState({'sillones': del})        })
         
         console.log(revivePromise)
     }
     getsillones() {
         sillonService.viewBorrados().then(res => {
-            this.setState({ sillones: res.data.map(sillon => {
+            this.setState({ sillones: res.data
+            })
+        })
+    }
+
+    renderTableContents() {
+        if (this.state.sillones) {
+            return this.state.sillones.map(sillon => {
                 let creationDate = new Date(sillon.fecha_creacion).toLocaleString('es-CL')
                 let updateDate = new Date(sillon.fecha_retirado).toLocaleString('es-CL')
                 return <>
@@ -90,8 +73,7 @@ class SillonesEliminados extends React.Component{
                     </tr>
                 </>
             })   
-            })
-        })
+        }
     }
 
     render() {
@@ -137,12 +119,18 @@ class SillonesEliminados extends React.Component{
         </TableRow>
         </TableHead>
         <TableBody class="centered">
-        {this.state.sillones}
+        {this.renderTableContents()}
     </TableBody>
     </Table>
 </TableContainer>
 </Container>
-            
+<Snackbar
+            open={this.state.deleteSnack}
+            autoHideDuration={3000}
+            onClose={this.hideSnack}
+            >
+                <Alert severity="success">¡Sillón habilitado con exito!"</Alert>
+            </Snackbar>
         
       
         </>
