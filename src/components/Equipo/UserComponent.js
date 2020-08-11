@@ -1,99 +1,131 @@
-import React from 'react';
+import React,{ useState, useEffect }from 'react';
+import MaterialTable from 'material-table';
 import axios from 'axios';
 
-import { withStyles, makeStyles } from '@material-ui/core/styles';
-import Table from '@material-ui/core/Table';
-import TableBody from '@material-ui/core/TableBody';
-import TableCell from '@material-ui/core/TableCell';
-import TableContainer from '@material-ui/core/TableContainer';
-import TableHead from '@material-ui/core/TableHead';
-import TableRow from '@material-ui/core/TableRow';
-import Paper from '@material-ui/core/Paper';
 
 
-class UserComponet extends React.Component{
-    constructor(){
 
-        super();
-        this.state = {
-            users:[]
-        };
 
+function newPersona(data){
+  axios.post('https://isw-nhr.herokuapp.com/api/personas', data )
+  .then(res => {      
+      const dd = res.data;
+      console.log(dd);
+
+    })  
+}
+
+function removePersona(id){
+  axios.delete('https://isw-nhr.herokuapp.com/api/personas/delete/'+ id.toString())
+  .then
+  (
+    res =>{
+      console.log(res.data);
     }
-    componentDidMount(){
 
-        axios.get('https://isw-nhr.herokuapp.com/api/personas/all')
-        .then(res => {
-          const persons = res.data;
-          this.setState({ users:persons });
-        });
+  )
 
-
-
-    }
-    render(){
-
-    const StyledTableCell = withStyles((theme) => ({
-        body: {
-        fontSize: 14,
-        },
-    }))(TableCell);
-
-    const StyledTableRow = withStyles((theme) => ({
-        root: {
-          '&:nth-of-type(odd)': {
-            backgroundColor: theme.palette.action.hover,
-          },
-        },
-      }))(TableRow);
-
-      const classes = makeStyles({
-        table: {
-          minWidth: 700,
-        },
-      });
-
-        return(
-                    <TableContainer component={Paper}>
-                        <Table className={classes.table} aria-label="customized table">
-                            <TableHead>
-                            <TableRow>
-                                <StyledTableCell>Id</StyledTableCell>
-                                <StyledTableCell align="right">Nombre</StyledTableCell>
-                                <StyledTableCell align="right">Apellido</StyledTableCell>
-                                <StyledTableCell align="right">Identificador</StyledTableCell>
-                                <StyledTableCell align="right">Especializacion</StyledTableCell>
-                                <StyledTableCell align="right">Estado</StyledTableCell>
-                            </TableRow>
-
-                            </TableHead>
-                            <TableBody>
-                           {
-                                        this.state.users.map(
-
-                                            user =>
-                                            <StyledTableRow key= {user.idPersona}>
-
-
-                                                 <StyledTableCell component="th" scope="row">{user.idPersona}</StyledTableCell>
-                                                 <StyledTableCell align="right">{user.nombre}</StyledTableCell>
-                                                 <StyledTableCell align="right">{user.apellido}</StyledTableCell>
-                                                 <StyledTableCell align="right">{user.identificador}</StyledTableCell>
-                                                 <StyledTableCell align="right">{user.especializacion}</StyledTableCell>
-                                                 <StyledTableCell align="right">{user.estado}</StyledTableCell>
-
-
-                                                 </StyledTableRow>
-
-                                        )
-                                        }
-                            </TableBody>
-                        </Table>
-                        </TableContainer>
-                    );
-
-
-    }
 
 }
-export default  UserComponet;
+
+function editPersona(data){
+  axios.put('https://isw-nhr.herokuapp.com/api/personas/edit/'+data.idPersona,data).then(
+
+    res=>{
+      console.log(res.data);
+    }
+  )
+
+
+}
+
+export default function MaterialTableDemo() {
+    
+  const [state, setState] = React.useState([
+
+      {nombre: 'Romina', apellido: 'Vasquez',identificador: 13,especializacion: 'medico', 
+     }
+    ]);
+
+  
+
+  useEffect(() => {
+
+
+    
+
+    axios
+      .get('https://isw-nhr.herokuapp.com/api/personas/all')
+      .then(res => res.data)
+      .then(res => setState({data:res}));
+  },[]);
+
+
+
+
+
+  return (
+    <MaterialTable
+      title="Personas"
+      columns={ [
+        {title: 'id', field:'idPersona',editable:'never'},
+        { title: 'Nombre', field: 'nombre' },
+        { title: 'Apellido', field: 'apellido' },
+        { title: 'Identificador', field: 'identificador' },
+        { title: 'Especializacion', field: 'especializacion' },
+        { title: 'Estado',field:'estado'}
+      
+        ]}
+      data={state.data}
+      editable={{
+        onRowAdd: (newData) =>
+          new Promise((resolve) => {
+            setTimeout(() => {
+              resolve();
+              setState((prevState) => {
+                const data = [...prevState.data];
+                data.push(newData);
+                newPersona(newData);
+
+
+                console.log(data);
+
+                return {...prevState,data};
+              });
+            }, 600);
+          }),
+
+          onRowUpdate: (newData, oldData) =>
+          new Promise((resolve) => {
+            setTimeout(() => {
+              resolve();
+              if (oldData) {
+                setState((prevState) => {
+                  const data = [...prevState.data];
+                  
+                  editPersona(newData);
+
+                  data[data.indexOf(oldData)] = newData;
+                  return { ...prevState, data };
+                });
+              }
+            }, 600);
+          }),
+        onRowDelete: (oldData) =>
+          new Promise((resolve) => {
+            setTimeout(() => {
+              resolve();
+              setState((prevState) => {
+                const data = [...prevState.data];
+                removePersona(oldData.idPersona);
+
+                data.splice(data.indexOf(oldData), 1);
+                return { ...prevState, data };
+              });
+            }, 600);
+          }),
+    
+      }}
+    />
+  );
+}

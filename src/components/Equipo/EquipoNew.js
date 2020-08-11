@@ -68,12 +68,17 @@ constructor(props) {
                   director :event.target.director.value,
                   ids :idl} )
                   .then(res => {      
-                    this.props.onCloseModal();
+                     this.props.onCloseModal();
+
+                    
                     axios.get('https://isw-nhr.herokuapp.com/api/equipos/all')
                     .then(res => {
                       const persons = res.data;
                       this.props.updateValue(persons);
                     })
+
+
+
                   })  
                 }
 

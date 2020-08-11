@@ -14,6 +14,8 @@ import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import DeleteIcon from '@material-ui/icons/Delete';
 import EditIcon from '@material-ui/icons/Edit';
+import TablePagination from '@material-ui/core/TablePagination';
+
 import AddIcon from '@material-ui/icons/Add';
 //Bootstrap
 import 'bootstrap/dist/css/bootstrap.css';
@@ -23,7 +25,8 @@ import 'bootstrap/dist/js/bootstrap.bundle.min';
 class Sillones extends React.Component{
     constructor(props) {
         super(props);
-        this.state = {sillones:[], editDetails: {}, addDetails: {}, addModal: false, editModal:false};
+        this.state = {sillones:[], editDetails: {}, addDetails: {}, addModal: false, editModal:false,
+        page:0,rowsPerPage:10 };
         this.delete = this.delete.bind(this);
         this.toogleAddModal = this.toogleAddModal.bind(this);
         this.toogleEditModal = this.toogleEditModal.bind(this);
@@ -84,10 +87,13 @@ class Sillones extends React.Component{
     addSillon(e) {
         e.preventDefault();
         let data = {...this.state.addDetails}
+
         data['activo'] = true
         console.log(data)
         let ss = sillonService.createSillon(data)
+            
         console.log(ss)
+        
         this.toogleAddModal()
     }
     editSillon(e) {
@@ -156,6 +162,7 @@ class Sillones extends React.Component{
                         updateDate = new Date(sillon.fecha_update).toLocaleString('es-CL')
                     console.log(creationDate, updateDate)
                 return  <>
+                
                     <TableRow key={sillon.id}>
                         <TableCell component="th" scope="row">{sillon.id}</TableCell>
                         <TableCell>{sillon.numero_sillon}</TableCell>
@@ -169,12 +176,26 @@ class Sillones extends React.Component{
                             <Button variant="contained" color="secondary" onClick={this.delete} startIcon={<DeleteIcon />} data={sillon.id}>Eliminar</Button>
                         </TableCell>
                     </TableRow>
+
+
+
                 </>
                     })
                 
             })
         })
     }
+
+    handleChangePage = (event, newPage) => {
+        this.setState({page:newPage});
+      };
+  
+  
+      handleChangeRowsPerPage = (event) => {
+       
+        this.setState({rowsPerPage : event.target.value, page:0});
+      };
+    
 
     render() {
         
@@ -274,10 +295,24 @@ class Sillones extends React.Component{
                     </TableRow>
                 </TableHead>
                 <TableBody>
-                    {this.state.sillones}
+                    {this.state.sillones.slice(this.state.page*this.state.rowsPerPage,
+              this.state.page*this.state.rowsPerPage+this.state.rowsPerPage )}
+
                 </TableBody>
             </Table>
         </TableContainer>
+
+            <TablePagination
+            rowsPerPageOptions={[10, 25, 100]}
+            component="div"
+            count={this.state.sillones.length}
+            rowsPerPage={this.state.rowsPerPage}
+            page={this.state.page}
+            onChangePage={this.handleChangePage}
+            onChangeRowsPerPage={this.handleChangeRowsPerPage}
+            
+        />
+
         </Container>
         </>
     }

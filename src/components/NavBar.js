@@ -40,7 +40,7 @@ render(){
 
 
   return (  
-      <AppBar position="sticky" style={{marginBottom:20}} >
+      <AppBar position="static" style={{marginBottom:20}} >
         <Toolbar>
           <IconButton edge="start" className={classes.menuButton} 
           color="inherit" aria-label="menu">
@@ -61,9 +61,9 @@ render(){
 
 
 
-          <Button  href= "/solicitud" color="inherit">Gestionar Solicitudes</Button>
+          <Button  href= "/solicitud" color="inherit">Solicitudes</Button>
 
-          <Button  href= "/reservas" color="inherit">Gestionar Reservas</Button>
+          <Button  href= "/reservas" color="inherit">Reservas</Button>
         </Toolbar>
       </AppBar>
   );
