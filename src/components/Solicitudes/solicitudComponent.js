@@ -119,7 +119,7 @@ class SolicitudComponent extends React.Component {
                                     <Grid item xs={10}></Grid>
                                     <Grid item xs={2}>
                                         <Box mt={4} mb={3}>
-                                            <Button>Generar solicitud</Button>
+                                            <Button href="/addSolicitud">Generar solicitud</Button>
                                         </Box>
                                     </Grid>
                                 </Grid>

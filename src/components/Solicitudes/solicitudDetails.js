@@ -37,7 +37,8 @@ class SolicitudDetails extends React.Component {
 
     componentDidMount() {
         console.log(this.props)
-        axios.get('https://lilservice.herokuapp.com/solicitudes/1')
+        console.log(this.props.match.params.id)
+        axios.get('https://lilservice.herokuapp.com/solicitudes/'+this.props.match.params.id)
             .then(res => {
                 const solicitudes_f = res.data;
                 this.setState({ solicitudes: solicitudes_f });

@@ -105,7 +105,7 @@ class ReservaComponent extends React.Component {
                                                                 <StyledTableCell component="th" scope="row">{reserva.id}</StyledTableCell>
                                                                 <StyledTableCell align="right">{reserva.idSolicitud["id"]}</StyledTableCell>
                                                                 <StyledTableCell align="right">{reserva.fecha_inicio.substring(0, 10)}</StyledTableCell>
-                                                                <StyledTableCell align="right"><Button variant="outlined">Ver más</Button></StyledTableCell>
+                                                                <StyledTableCell align="right"><Button className="success" href={ "/detallesReserva/"+reserva.id }  >ver más</Button></StyledTableCell>
                                                             </StyledTableRow>
                                                     )
                                                 }

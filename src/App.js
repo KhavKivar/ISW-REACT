@@ -18,11 +18,14 @@ import HistorialSillones from './components/HistorialSillones'
 import SillonesEliminados from './components/SillonesEliminadosComponent'
 
 
-import SolicitudComponent from './components/solicitudComponent';
-import ReservaComponent from './components/reservaComponent';
-import SolicitudDetails from './components/solicitudDetails';
+import SolicitudComponent from './components/Solicitudes/solicitudComponent';
+import ReservaComponent from './components/Reservas/reservaComponent';
+import ReservaDetails from './components/Reservas/reservaDetails';
+import SolicitudDetails from './components/Solicitudes/solicitudDetails';
+import AddSolicitud from './components/Solicitudes/addSolicitud';
 
 import Equipamiento from './components/Equipamiento'
+import AddReserva from './components/Reservas/addReserva';
 
 
 
@@ -78,14 +81,23 @@ function App() {
              </SolicitudComponent>
           </Route>
 
-          <Route exact path="/detallesSolicitud/:id">
-             <SolicitudDetails>
-             </SolicitudDetails>
+          <Route path="/addSolicitud">
+            <AddSolicitud>
+
+            </AddSolicitud>
           </Route>
+
+          <Route exact path="/detallesSolicitud/:id" component={SolicitudDetails} />
+          <Route exact path="/detallesReserva/:id" component={ReservaDetails} />
 
           <Route path="/reservas">
              <ReservaComponent>
              </ReservaComponent>
+          </Route>
+
+          <Route path="/addReserva">
+             <AddReserva>
+             </AddReserva>
           </Route>
 
           <Route path="/equipamiento">
@@ -99,11 +111,6 @@ function App() {
          
         </Router>
         </div>
-    
-
-   
-   
-
   );
 }
 
